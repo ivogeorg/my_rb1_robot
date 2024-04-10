@@ -24,13 +24,14 @@ Repository for Checkpoint 1 of The Construct Robotics Masterclass. Creating a si
             izz="4.742" />
    </inertial>
    ```
-3. For the purposes of inertia:
+3. The `inertial` tag has an origin. _What is this the origin of and how does it relate to the joint and link origins?_
+4. For the purposes of inertia:
    1. The robot is a cylinder.
    2. The two wheels are cylinders.
    3. The caster wheels are (approximately) spheres. (In actuallity, a caster wheel is a sphere and an off-center nested sphere.)
    4. The scanner is a cylinder.
-4. The project asks for a URDF file `my_rb1_robot.urdf` and not an Xacro file. Xacro allows definition of properies with `<xacro:property name="chassis_mas" value="10"/>` which can then be used in formulae in, for example `<mass value="${2 * chassis_mas}"/>`. In a way, XACRO serves as a _preprocessor_ for URDF, among other things. This means that all numbers have to be hardcoded (though their computation can be documented in comments) and `gazebo` tags should be in the one URDF file.
-5. This is the first time that a "fooprint" links is used apart from the base link. It is usually a reference for the rest of the robot links and is defined to be co-planar with the ground plane. It helps with the simulation of a lot of robot behavior. `base_footprint` is a projection of `base_link` on the ground plane (floor) and there may be a parent-child dependence between the two.
+5. The project asks for a URDF file `my_rb1_robot.urdf` and not an Xacro file. Xacro allows definition of properies with `<xacro:property name="chassis_mas" value="10"/>` which can then be used in formulae in, for example `<mass value="${2 * chassis_mas}"/>`. In a way, XACRO serves as a _preprocessor_ for URDF, among other things. This means that all numbers have to be hardcoded (though their computation can be documented in comments) and `gazebo` tags should be in the one URDF file.
+6. This is the first time that a "fooprint" links is used apart from the base link. It is usually a reference for the rest of the robot links and is defined to be co-planar with the ground plane. It helps with the simulation of a lot of robot behavior. `base_footprint` is a projection of `base_link` on the ground plane (floor) and there may be a parent-child dependence between the two. _What tags does the `base_footprint` have as link since it is just a projection?_
 
 ### References
 
