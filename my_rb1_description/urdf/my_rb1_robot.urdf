@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 
-<robot>
+
+<robot name="my_rb1_robot">
+    <!-- Gazebo tags -->
+    <!-- <gazebo reference="base_link">
+        <material>Gazebo/Blue</material>
+    </gazebo> -->
+
+    <!-- Links -->
+    <!--Link: base_footprint-->
+    <link name="">
+        <inertial>
+            <mass value="0"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial>
+
+        <collision>
+            <geometry>
+                <cylinder length="" radius=""/>
+                <!-- <sphere radius=""/> -->
+            </geometry>
+        </collision>
+
+        <visual>
+            <geometry>
+                <cylinder length="" radius=""/>
+                <!-- <sphere radius=""/> -->
+            </geometry>
+            <material name="Black">
+                <!--
+                    For transparency in RViz,
+                    change 'Alpha' under "RobotModel"
+                -->
+                <color rgba="1 1 1 0.5"/>
+            </material>
+        </visual>
+    </link>
+    <!--Link: base_link-->
+    <!--Link: right_wheel-->
+    <!--Link: left_wheel-->
+    <!--Link: front_caster-->
+    <!--Link: rear_caster-->
+    <!--Link: front_laser-->
+    <!-- Joints -->
+    <!--Joint: base_footprint/base_link-->
+    <!--Joint: base_link/right_wheel-->
+    <!--Joint: base_link/left_wheel-->
+    <!--Joint: base_link/front_caster-->
+    <!--Joint: base_link/rear_caster-->
+    <!--Joint: base_link/front_laser-->
 </robot>
