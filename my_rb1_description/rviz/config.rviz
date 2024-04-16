@@ -8,7 +8,6 @@ Panels:
         - /Status1
         - /RobotModel1
         - /RobotModel1/Links1
-        - /RobotModel1/Links1/base_link1
       Splitter Ratio: 0.5
     Tree Height: 565
   - Class: rviz/Selection
@@ -75,6 +74,11 @@ Visualization Manager:
           Show Axes: true
           Show Trail: false
           Value: true
+        right_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
@@ -128,6 +132,8 @@ Visualization Manager:
           Value: true
         base_link:
           Value: true
+        right_wheel:
+          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -137,7 +143,8 @@ Visualization Manager:
       Tree:
         base_footprint:
           base_link:
-            {}
+            right_wheel:
+              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -201,9 +208,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.2803983986377716
+      Pitch: 0.38039833307266235
       Target Frame: <Fixed Frame>
-      Yaw: 1.2403980493545532
+      Yaw: 5.528581142425537
     Saved: ~
 Window Geometry:
   Displays:
@@ -221,5 +228,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1600
-  X: 0
-  Y: 0
+  X: -1
+  Y: -20

@@ -43,3 +43,21 @@ Yes, that could be wrong. The collision and visual should theoretically match th
 Yes, all links are assumed to be solid or hollow with its respective inertias. Since we do not have hollow basic shapes in gazebo, we are left only with solid shapes. We can however, make a 3D CAD model and use their respective inertias.
 You would usually link the caster wheel to the outer sphere, so when you specify the respective individual inertias for each of the shapes, they get appropriately algebraically added up during simulation. You need not worry about inertia value exactness for small robots.
 The 25 kg is the total mass of the robot including all of its components. You may appropriately choose a good proportion for sharing the total weight among the robot's components such as wheels, casters, laser, etc. Every link except the "ghost" root link has inertia and mass.
+
+## _2024-04-16, 10:06_
+
+On dimensions and pose:
+1. ~How are the following two statements to be reconciled:~
+   1. ~_Has 2 wheels of 5 cm diameter on each side of the base. One at (0.0, -0.2, -0.15) from the base_link and another at (0.0, 0.2, -0.15)._ and~
+   2. ~_`base_link` located at the center of the rotation axis that connect the two wheels_~
+2. ~Does a robot model need to be defined "above ground" in URDF for it to populate correctly in Gazebo?~
+3. 
+
+## Answers to _2024-04-16, 10:06_
+1. The second statement is ambiguous, since "at" can mean just about anything. However, the dimensions and distances make the meaning clear:
+   1. The robot's `base_link` is a cylinder 30 cm long (or tall, since it's not rotated on either the `x` or `y` axis).
+   2. The wheels, which are rotated around the `x` axis, are at z=-0.15. so the axis (of rotation) intersecting their centers is exactly at the "bottom" of the cylinder. This explains the meaning of the second statement.
+2. It seems like it doesn't have to:
+   1. If the robot is defined to be above and below the imaginary ground plane intersecting the origin of the root link frame, to spawn above the ground, specify `-z Z` in the argumants to the spawner where `Z` is the height of the robot frame origin (the origin of the root link frame) above the plane. (See [Gazebo Answers](https://answers.gazebosim.org//question/24436/how-to-specify-urdf-link-which-attaches-to-world-ground/))
+   2. To avoid sinking, define the collision parameters for all links. _Define inertia for the rest of the physics._ (See [Gazebo Answsers](https://answers.gazebosim.org//question/24436/how-to-specify-urdf-link-which-attaches-to-world-ground/))
+3. 
