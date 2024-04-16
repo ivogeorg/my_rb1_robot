@@ -43,6 +43,24 @@ Repository for Checkpoint 1 of The Construct Robotics Masterclass. Creating a si
 11. The root link does not have to be in any way the most "downward". It can be a spatially "central" component, to which the rest of the components are attached through joints, in all directions. To spawn "above the ground" specify an argument for the vertical offset for the spawner. 
 12. Probably the most confusing and nonsensical feature of URDF is that the shape can be offset from its frame of reference (the link frame). If that is done, all 3 subtags (inertial, collision, visual) have matching offsets. This becomes hard to track and get right for a complex robot. The more natural approach is to only specify the `<offset>` in joints, which moves the link frame for the child relative to the parent link frame. If the parent link frame is also defaulted, no parent offsets have to be added to the joint `<origin>`. Importantly, the `<inertial>-<origin>` can be defaulted.
 13. In a joint with an axis of rotation, the rotation is interpreted relative to the parent link frame!
+14. Mass calulation:
+    1. Total mass is 25 kg.
+    2. 6 parts with non-zero mass:
+       1. `base_link`, V = pi*h*r^2 = pi * 0.3*0.25^2 = pi * 0.01875
+       2. `right_wheel`, V = pi * 0.025*0.025^2 = pi * 0.000015625 
+       3. `left_wheel`, V = pi * 0.025*0.025^2 = pi * 0.000015625
+       4. `front_caster`, V = pi * (4/3)*0.015^3 = pi * 0.0000045
+       5. `rear_caster`, V = pi * (4/3)*0.015^3 =  pi * 0.0000045
+       6. `front_laser` (casing), V = pi * 0.025*0.025^2 = pi * 0.000015625
+       7. Total volume V_tot = pi * 0.018805875
+    3. Assuming equal density.
+       1. `base_link`, M = (25 / 1880.5875) * 1875 = 24.925721350375877 ~ 24.926
+       2. `right_wheel`, M = (25 / 1880.5875) * 1.5625 = 0.020771434458646567 ~ 0.021
+       3. `left_wheel`, M = (25 / 1880.5875) * 1.5625 = 0.020771434458646567 ~ 0.021
+       4. `front_caster`, M = (25 / 1880.5875) * 0.45 = 0.005982173124090211 ~ 0.006
+       5. `rear_caster`, M = (25 / 1880.5875) * 0.45 = 0.005982173124090211 ~ 0.006
+       6. `front_laser` (casing), M = (25 / 1880.5875) * 1.5625 = 0.020771434458646567 ~ 0.021
+
 
 
 ### References

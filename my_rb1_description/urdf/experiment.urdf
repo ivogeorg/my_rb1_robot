@@ -1,6 +1,5 @@
 <?xml version="1.0" ?>
 
-
 <robot name="experiment">
     <!-- Materials -->
     <material name="yellow">
@@ -38,11 +37,10 @@
 
     <!--Link: base_link-->
     <link name="base_link">
-        <!-- <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="25"/>
-            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
-        </inertial> -->
+        <inertial>
+            <mass value="24.926"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/> <!-- TODO -->
+        </inertial>
 
         <collision>
             <!-- <origin xyz="0 0 0.15" rpy="0 0 0"/> -->
@@ -64,11 +62,10 @@
 
     <!--Link: right_wheel-->
     <link name="right_wheel">
-        <!-- <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="25"/>
-            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
-        </inertial> -->
+        <inertial>
+            <mass value="0.021"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/> <!-- TODO -->
+        </inertial>
 
         <collision>
             <!-- <origin xyz="0 0 0.15" rpy="0 0 0"/> -->
@@ -90,11 +87,10 @@
 
     <!--Link: left_wheel-->
     <link name="left_wheel">
-        <!-- <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="25"/>
-            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
-        </inertial> -->
+        <inertial>
+            <mass value="0.021"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/> <!-- TODO -->
+        </inertial>
 
         <collision>
             <!-- <origin xyz="0 0 0.15" rpy="0 0 0"/> -->
@@ -116,11 +112,10 @@
 
     <!--Link: front_caster-->
     <link name="front_caster">
-        <!-- <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="25"/>
-            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
-        </inertial> -->
+        <inertial>
+            <mass value="0.006"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/> <!-- TODO -->
+        </inertial>
 
         <!-- Outer wheel -->
         <collision>
@@ -157,11 +152,10 @@
 
     <!--Link: rear_caster-->
     <link name="rear_caster">
-        <!-- <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="25"/>
-            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
-        </inertial> -->
+        <inertial>
+            <mass value="0.006"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/> <!-- TODO -->
+        </inertial>
 
         <!-- Outer wheel -->
         <collision>
@@ -198,11 +192,10 @@
 
     <!--Link: front_laser-->
     <link name="front_laser">
-        <!-- <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="25"/>
-            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
-        </inertial> -->
+        <inertial>
+            <mass value="0.021"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/> <!-- TODO -->
+        </inertial>
 
         <collision>
             <!-- <origin xyz="0 0 0.15" rpy="0 0 0"/> -->
