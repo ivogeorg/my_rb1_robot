@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 
 
-<robot name="my_rb1_robot">
+<robot name="experiment">
     <!-- Gazebo tags -->
     <!-- <gazebo reference="base_link">
         <material>Gazebo/Blue</material>
@@ -9,38 +9,36 @@
 
     <!-- Links -->
     <!--Link: base_footprint-->
-    <link name="">
+    <!-- <link name="">
         <visual>
             <geometry>
                 <cylinder length="0.001" radius="0.5"/>
             </geometry>
             <material name="Black">
-                <!--
-                    For transparency in RViz,
-                    change 'Alpha' under "RobotModel"
-                -->
                 <color rgba="1 1 1 0.5"/>
             </material>
         </visual>
-    </link>
+    </link> -->
     <!--Link: base_link-->
-    <link name="">
+    <link name="base_link">
         <inertial>
-            <mass value="0"/>
             <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0"/>
             <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
         </inertial>
 
         <collision>
+            <origin xyz="0 0 0.15" rpy="0 0 0"/>
             <geometry>
-                <cylinder length="" radius=""/>
+                <cylinder length="0.3" radius="0.25"/>
                 <!-- <sphere radius=""/> -->
             </geometry>
         </collision>
 
         <visual>
+            <origin xyz="0 0 0.15" rpy="0 0 0"/>
             <geometry>
-                <cylinder length="" radius=""/>
+                <cylinder length="0.3" radius="0.25"/>
                 <!-- <sphere radius=""/> -->
             </geometry>
             <material name="Black">
