@@ -37,7 +37,9 @@ Repository for Checkpoint 1 of The Construct Robotics Masterclass. Creating a si
    1. The most basic frame of the link (that is, the robot component defined in a `<link>` tag). It is _basic_ in the sense that all subtags, in particular the `<origin>` subtags, are _relative to it_.
    2. There doesn't seem to be a way to define the origin of the link frame itself. For a link called, say, `base_link`, that defines a simple shape, when "Fixed Frame" in RViz is set to `base_link`, the shape appears in the middle of the plane centered at the shape's center of mass (CoM). This would imply that the the link frame initially and by default (that is, when `xyz="0 0 0"` and `rpy="0 0 0") has its origin at the CoM of the link shape. What happens when the shape is more complex, it remains to be seen.
    3. Setting `xyz="1 1 1"` in `<visual>` and `<colision>`, for example, makes the shape appear at a distance of 1 along each of the 3 axes from its frame. What is the utility of that is not clear. For proper inertial calculations, it seem that if the shape is moved like this away from the origin of its frame, the `<inertial>` origin should be modified the same way.
-   
+9. Cannot have two links that are not connected directly or indirectly, showing that there can be only one link in a URDF file.
+10. The `<origin>` in `<joint>` places the link frame of the child relative to the link frame of the parent! The `<origin>` tags in the link `<inertial>`, `<collision>`, and `<visual>` tags are unnecessary if the link doesn't have to translate or rotate relative to its own frame (i.e. child link frame).
+
 
 ### References
 

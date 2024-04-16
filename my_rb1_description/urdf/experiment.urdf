@@ -2,6 +2,14 @@
 
 
 <robot name="experiment">
+    <!-- Materials -->
+    <material name="yellow">
+        <color rgba="1 1 0 0.5"/>
+    </material>
+    <material name="red">
+        <color rgba="1 0 0 0.5"/>
+    </material>
+
     <!-- Gazebo tags -->
     <!-- <gazebo reference="base_link">
         <material>Gazebo/Blue</material>
@@ -9,26 +17,25 @@
 
     <!-- Links -->
     <!--Link: base_footprint-->
-    <!-- <link name="">
+    <link name="base_footprint">
         <visual>
+            <origin xyz="0 0 0.15" rpy="0 0 0"/>
             <geometry>
-                <cylinder length="0.001" radius="0.5"/>
+                <cylinder length="0.001" radius="0.25"/>
             </geometry>
-            <material name="Black">
-                <color rgba="1 1 1 0.5"/>
-            </material>
+            <material name="yellow" />
         </visual>
-    </link> -->
+    </link>
     <!--Link: base_link-->
     <link name="base_link">
-        <inertial>
+        <!-- <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="0"/>
+            <mass value="25"/>
             <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
-        </inertial>
+        </inertial> -->
 
         <collision>
-            <origin xyz="0 0 0.15" rpy="0 0 0"/>
+            <!-- <origin xyz="0 0 0.15" rpy="0 0 0"/> -->
             <geometry>
                 <cylinder length="0.3" radius="0.25"/>
                 <!-- <sphere radius=""/> -->
@@ -36,18 +43,12 @@
         </collision>
 
         <visual>
-            <origin xyz="0 0 0.15" rpy="0 0 0"/>
+            <!-- <origin xyz="1 1 0.15" rpy="0 0 0"/> -->
             <geometry>
                 <cylinder length="0.3" radius="0.25"/>
                 <!-- <sphere radius=""/> -->
             </geometry>
-            <material name="Black">
-                <!--
-                    For transparency in RViz,
-                    change 'Alpha' under "RobotModel"
-                -->
-                <color rgba="1 1 1 0.5"/>
-            </material>
+            <material name="red" />
         </visual>
     </link>
     <!--Link: right_wheel-->
@@ -57,6 +58,14 @@
     <!--Link: front_laser-->
     <!-- Joints -->
     <!--Joint: base_footprint/base_link-->
+    <joint name="joint_base_footprint_base_link" type="fixed">
+        <origin xyz="0 0 0.301" rpy="0 0 0" />
+        <parent link="base_footprint" />
+        <child link="base_link" />
+        <!-- <axis rpy="0 0 0" xyz="0 0 0" /> -->
+        <!-- <limit effort="10000" velocity="1000" />
+        <joint_properties damping="1.0" friction="1.0" /> -->
+    </joint>
     <!--Joint: base_link/right_wheel-->
     <!--Joint: base_link/left_wheel-->
     <!--Joint: base_link/front_caster-->
