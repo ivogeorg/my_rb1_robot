@@ -74,6 +74,26 @@ Visualization Manager:
           Show Axes: true
           Show Trail: false
           Value: true
+        front_caster:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_laser:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_caster:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         right_wheel:
           Alpha: 1
           Show Axes: false
@@ -132,6 +152,14 @@ Visualization Manager:
           Value: true
         base_link:
           Value: true
+        front_caster:
+          Value: true
+        front_laser:
+          Value: true
+        left_wheel:
+          Value: true
+        rear_caster:
+          Value: true
         right_wheel:
           Value: true
       Marker Alpha: 1
@@ -143,6 +171,14 @@ Visualization Manager:
       Tree:
         base_footprint:
           base_link:
+            front_caster:
+              {}
+            front_laser:
+              {}
+            left_wheel:
+              {}
+            rear_caster:
+              {}
             right_wheel:
               {}
       Update Interval: 0
@@ -200,17 +236,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.023378700017929077
-        Y: 0.0856529176235199
-        Z: -0.25871825218200684
+        X: -0.3098618984222412
+        Y: -0.2232668399810791
+        Z: -0.18076905608177185
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.38039833307266235
+      Pitch: 0.650398313999176
       Target Frame: <Fixed Frame>
-      Yaw: 5.528581142425537
+      Yaw: 5.903578758239746
     Saved: ~
 Window Geometry:
   Displays:
@@ -228,5 +264,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1600
-  X: -1
-  Y: -20
+  X: 0
+  Y: 0

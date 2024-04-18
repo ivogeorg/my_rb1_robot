@@ -4,8 +4,16 @@ Repository for Checkpoint 1 of The Construct Robotics Masterclass. Creating a si
 
 ![RB-1 Base blueprint](assets/Robotnik-RB-1-BASE-Blueprints-web-2.jpg)
 
+### Submission notes
 
-### Notes _and Questions_
+_Notes of interest to the reviewer!_
+
+1. 
+
+
+### Implementation notes
+
+_Private notes._
 
 1. `tf` in ROS and RViz refers to **t**ransform between coordinate **f**rames. There is a world frame and each robot has at least one frame of its own and multiple if it has multiple components. The [`tf`](http://wiki.ros.org/tf) package (deprecated and superceded by [`tf2`](http://wiki.ros.org/tf2)) keeps track of and maintains the relation (i.e. transform) between the multiple frames in a world. The frames can be visualized in RViz as well as in a tree view. The [tutorial](http://wiki.ros.org/tf/Tutorials/Introduction%20to%20tf) illustrates this.
 2. The moments of inertia are expressed as the terms of [3D inertia tensors](https://en.wikipedia.org/wiki/List_of_moments_of_inertia#List_of_3D_inertia_tensors). Note that the 3x3 inertia matrix is symmetric, so only 6 numbers are specified (see below). Instead of precomputing them, they can be expressed with their formulas and declared parameters. However, see note below on URDF and Xacro.
@@ -60,8 +68,33 @@ Repository for Checkpoint 1 of The Construct Robotics Masterclass. Creating a si
        4. `front_caster`, M = (25 / 1880.5875) * 0.45 = 0.005982173124090211 ~ 0.006
        5. `rear_caster`, M = (25 / 1880.5875) * 0.45 = 0.005982173124090211 ~ 0.006
        6. `front_laser` (casing), M = (25 / 1880.5875) * 1.5625 = 0.020771434458646567 ~ 0.021
-
-
+15. Inertia calcualtion:
+    1. Due to the 3-axis inertial tensor being a symmetric 2D matrix, the form of the form of the `<inertial>-<inertia>` subtag is as follows:
+       `<inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>`
+    2. The following links are solid cylinders: `base_link`, `right_wheel`, `left_wheel`, `front_laser` (this is taken from the notebook).
+    3. The inertial tensor for a solid cylinder is:
+       1. Ixx = Iyy = (1/12) * m * (3 * r^2 + h^2)
+       2. Izz = (1/2) * m * r^2
+       3. Ixy = Ixz = Iyz = 0
+    4. For `base_link`:
+       1. m = 24.926, r = 0.25, h = 0.3
+       2. Ixx = Iyy = (1/12) * 24.926 * (3 * 0.25**2 + 0.3**2) = 0.5764137499999998 ~ 0.5764
+       3. Izz = (1/2) * 24.926 * 0.25**2 = 0.7789375 ~ 0.7789
+       4. `<inertia ixx="0.5764" ixy="0" ixz="0" iyy="0.5764" iyz="0" izz="0.7789"/>`
+    5. For `right_wheel`, `left_wheel`, and `front_laser`:
+       1. m = 0.021, r = h = 0.025
+       2. Ixx = Iyy = (1/12) * 0.021 * (3 * 0.025**2 + 0.025**2) = (1/3) * 0.021 * 0.025**2 = 4.375000000000001e-06 ~ 0.000004
+       3. Izz = (1/2) * 0.021 * 0.025**2 = 6.562500000000002e-06 ~ 0.000007
+       4. `<inertia ixx="0.000004" ixy="0" ixz="0" iyy="0.000004" iyz="0" izz="0.000007"/>`
+    7. The following links are solid spheres: `front_caster` and `rear_caster`.
+    8. The inertial tensor for a solid sphere is:
+       1. Ixx = Iyy = Izz = (2/5) * m * r**2
+       2. Ixy = Iyz = Ixz = 0
+    9. For the caster, it is assumed that it is a single solid sphere and the internal/nested sphere is ignored.
+    10. For `front_caster` and `rear_caster`:
+        1. m = 0.006, r = 0.015
+        2. Ixx = Iyy = Izz = (2/5) * 0.006 * 0.015**2 = 5.4e-07 ~ 0.0000005
+        3. `<inertia ixx="0.0000005" ixy="0" ixz="0" iyy="0.0000005" iyz="0" izz="0.0000005"/>`
 
 ### References
 
