@@ -4,12 +4,20 @@ Repository for Checkpoint 1 of The Construct Robotics Masterclass. Creating a si
 
 ![RB-1 Base blueprint](assets/Robotnik-RB-1-BASE-Blueprints-web-2.jpg)
 
-### Submission notes
+### Submission notes - Part 1
 
 _Notes of interest to the reviewer!_
 
-1. 
+1. `base_footprint` is the root link and is default-positioned on the ground plane with parts on both sides of it. This will require spawning at `z=0.015` or slightly larger to avoid the anomaly of spawning a model under the ground plane.
+2. The total mass of 25 kg has been split among the base, wheels, casters, and laser. Assuming solid shapes with equal density, the mass ratios are equal to their volume ratios.
+3. The height/length of the wheel cylinders wasn't specified, so h = r = 0.025 was chosen.
+4. `front_laser` is the same cylinder as the wheels.
+5. The **Alpha** parameters in RViz were very slow to update, so all the links have an alpha of 0.5, for visibility.
+6. The position of `base_link`, which is the child of a fixed joint with `base_footprint` was ambiguous. For example, what does it mean for a link to be "located at" something, in particular `base_link` being _"located at the center of the rotation axis that connect the two wheels"_? Looking at the dimensions, I interpreted it as the bottom plate of `base_link` coninsides with the imaginary axis between the two wheels.
+7. I struggled long trying to figure out what the "link frame" was and what its properties and affordances were, but I think I finally understand, as you can see if you peruse my [Implementation notes](#implementation-notes). Finally, this resulted in what I think is a clean and minimal URDF definition of the robot.
+8. For purposes of mass and inertia, I am treating the casters as a single solid sphere, without any nesting of two spheres, etc. It's so small, that these values are infinitesimal anyway. For the purposes of robot pose, I have "lifted" the outer sphere up along the `z` axis just as much as the inner nested sphere protrudes down from the outer sphere.
 
+![The robot at the completion of Part 1](assets/Part-1-screenshot.png)  
 
 ### Implementation notes
 
