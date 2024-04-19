@@ -26,7 +26,7 @@
 
     <arg name="x" default="-0.313"/>
     <arg name="y" default="-1.365"/>
-    <arg name="z" default="0.175"/> <!-- body half-height 0.15 + wheel radius 0.025-->
+    <arg name="z" default="0.0245"/> <!-- wheel radius 0.025 - half thickness of fooprint 0.0005 -->
 
     <!-- Spawn model at specified world coordinates -->    
     <node name="my_rb1_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
