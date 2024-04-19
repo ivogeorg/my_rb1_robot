@@ -21,6 +21,19 @@ _Notes of interest to the reviewer!_
 
 ![The robot at the completion of Part 1](assets/Part-1-screenshot.png)  
 
+### Submission notes - Part 2
+
+_Notes of interest to the reviewer!_
+
+`roslaunch my_rb1_gazebo my_rb1_robot_warehouse.launch`  
+
+1. The `z` argument for the launcher is meant to populate the robot "above ground" because the robot is centered at the origin of the root link `base_footprint` and the wheels "stick out" along the negative `z` axis.
+   `    <arg name="z" default="0.0245"/> <!-- wheel radius 0.025 - half thickness of fooprint 0.0005 -->`
+2. The publisher guis appear in separate windows.
+
+![The robot at the completion of Part 2](assets/Part-2-screenshot.png)  
+
+
 ### Implementation notes
 
 _Private notes._
