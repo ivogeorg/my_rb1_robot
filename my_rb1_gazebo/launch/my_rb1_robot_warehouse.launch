@@ -14,5 +14,22 @@
 		<arg name="headless" value="false"/>
 		<arg name="verbose" value="true"/>
 	</include>
+
+    <!-- Send fake joint values -->
+    <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+
+    <!-- Combine joint values -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+    <!-- RB1 replica to spawn -->
+    <param name="robot_description" command="cat '$(find my_rb1_description)/urdf/my_rb1_robot.urdf'"/>
+
+    <arg name="x" default="-0.313"/>
+    <arg name="y" default="-1.365"/>
+    <arg name="z" default="0.175"/> <!-- body half-height 0.15 + wheel radius 0.025-->
+
+    <!-- Spawn model at specified world coordinates -->    
+    <node name="my_rb1_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+          args="-urdf -param robot_description -model my_rb1_robot -x $(arg x) -y $(arg y) -z $(arg z)" />
 	
 </launch>
