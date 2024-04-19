@@ -105,7 +105,7 @@ _Private notes._
         1. m = 0.006, r = 0.015
         2. Ixx = Iyy = Izz = (2/5) * 0.006 * 0.015**2 = 5.4e-07 ~ 0.0000005
         3. `<inertia ixx="0.0000005" ixy="0" ixz="0" iyy="0.0000005" iyz="0" izz="0.0000005"/>`
-    11. The parameter `robot_description` expeced by RViz is defined in the launch file as follows:
+    11. The parameter `robot_description` expected by RViz is defined in the launch file as follows:
         ```xml
         <launch>
             <param name="robot_description" command="cat '$(find my_rb1_description)/urdf/my_rb1_robot.urdf'"/>
