@@ -30,16 +30,95 @@
     </gazebo>
     <gazebo reference="front_caster">
         <material>Gazebo/Black</material>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
     </gazebo>
     <gazebo reference="rear_caster">
         <material>Gazebo/Black</material>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
     </gazebo>
     <gazebo reference="right_wheel">
         <material>Gazebo/Black</material>
+        <mu1>1.0</mu1>
+        <mu2>1.0</mu2>
     </gazebo>
     <gazebo reference="left_wheel">
+        <mu1>1.0</mu1>
+        <mu2>1.0</mu2>
         <material>Gazebo/Black</material>
     </gazebo>
+
+    <gazebo reference="joint_base_link_front_caster">
+        <preserveFixedJoint>true</preserveFixedJoint> <!-- Don't fuse to base -->
+    </gazebo>
+
+    <gazebo reference="joint_base_link_rear_caster">
+        <preserveFixedJoint>true</preserveFixedJoint> <!-- Don't fuse to base -->
+    </gazebo>
+
+    <gazebo reference="joint_base_link_front_laser">
+        <preserveFixedJoint>true</preserveFixedJoint> <!-- Don't fuse to base -->
+    </gazebo>
+
+    <!-- Differential drive plugin -->
+    <gazebo>
+        <plugin filename="libgazebo_ros_diff_drive.so" name="differential_drive_controller">
+            <alwaysOn>true</alwaysOn>
+            <updateRate>20</updateRate>
+            <leftJoint>joint_base_link_left_wheel</leftJoint>
+            <rightJoint>joint_base_link_right_wheel</rightJoint>
+            <wheelSeparation>1.66</wheelSeparation> <!-- TODO: update for mesh tires -->
+            <wheelDiameter>0.05</wheelDiameter>
+            <torque>10</torque>
+            <commandTopic>cmd_vel</commandTopic>
+            <odometryTopic>odom</odometryTopic>
+            <odometryFrame>odom</odometryFrame>
+            <robotBaseFrame>base_link</robotBaseFrame> <!-- TODO: this doesn't need to be base_footprint, right? -->
+        </plugin>
+    </gazebo>
+
+    <!-- Control plugin -->
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/robot</robotNamespace>
+            <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+        </plugin>
+    </gazebo>
+
+    <!-- Laser scan -->
+    <gazebo reference="front_laser">
+        <sensor type="ray" name="head_hokuyo_sensor">
+            <pose>0 0 0 0 0 0</pose>
+            <visualize>true</visualize> <!-- Simulate rays -->
+            <update_rate>20</update_rate>
+            <ray>
+                <scan>
+                    <horizontal>
+                        <samples>720</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-1.570796</min_angle> <!-- ~ -90 deg -->
+                        <max_angle>1.570796</max_angle> <!-- ~ 90 deg -->
+                    </horizontal>
+                </scan>
+                <range> <!-- Should be outside "devide" cylinder! --> <!-- TODO: check! -->
+                    <min>0.20</min>
+                    <max>10.0</max>
+                    <resolution>0.01</resolution>
+                </range>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.01</stddev>
+                </noise>
+            </ray>
+            <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+                <topicName>/laser/scan</topicName>
+                <frameName>sensor_laser</frameName>
+            </plugin>
+        </sensor>
+    </gazebo>
+
 
     <!-- Links -->
 
