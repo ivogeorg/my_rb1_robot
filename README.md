@@ -8,6 +8,8 @@ Repository for Checkpoint 1 of The Construct Robotics Masterclass. Creating a si
 
 _Notes of interest to the reviewer!_
 
+`roslaunch my_rb1_description display.launch`  
+
 1. `base_footprint` is the root link and is default-positioned on the ground plane with parts on both sides of it. This will require spawning at `z=0.015` or slightly larger to avoid the anomaly of spawning a model under the ground plane.
 2. The total mass of 25 kg has been split among the base, wheels, casters, and laser. Assuming solid shapes with equal density, the mass ratios are equal to their volume ratios.
 3. The height/length of the wheel cylinders wasn't specified, so h = r = 0.025 was chosen.
@@ -103,6 +105,14 @@ _Private notes._
         1. m = 0.006, r = 0.015
         2. Ixx = Iyy = Izz = (2/5) * 0.006 * 0.015**2 = 5.4e-07 ~ 0.0000005
         3. `<inertia ixx="0.0000005" ixy="0" ixz="0" iyy="0.0000005" iyz="0" izz="0.0000005"/>`
+    11. The parameter `robot_description` expeced by RViz is defined in the launch file as follows:
+        ```xml
+        <launch>
+            <param name="robot_description" command="cat '$(find my_rb1_description)/urdf/my_rb1_robot.urdf'"/>
+            <!-- other inits and starts -->
+        </launch>
+        ```
+
 
 ### References
 
