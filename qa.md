@@ -51,7 +51,7 @@ On dimensions and pose:
    1. ~_Has 2 wheels of 5 cm diameter on each side of the base. One at (0.0, -0.2, -0.15) from the base_link and another at (0.0, 0.2, -0.15)._ and~
    2. ~_`base_link` located at the center of the rotation axis that connect the two wheels_~
 2. ~Does a robot model need to be defined "above ground" in URDF for it to populate correctly in Gazebo?~
-3. 
+
 
 ## Answers to _2024-04-16, 10:06_
 1. The second statement is ambiguous, since "at" can mean just about anything. However, the dimensions and distances make the meaning clear:
@@ -60,4 +60,12 @@ On dimensions and pose:
 2. It seems like it doesn't have to:
    1. If the robot is defined to be above and below the imaginary ground plane intersecting the origin of the root link frame, to spawn above the ground, specify `-z Z` in the argumants to the spawner where `Z` is the height of the robot frame origin (the origin of the root link frame) above the plane. (See [Gazebo Answers](https://answers.gazebosim.org//question/24436/how-to-specify-urdf-link-which-attaches-to-world-ground/))
    2. To avoid sinking, define the collision parameters for all links. _Define inertia for the rest of the physics._ (See [Gazebo Answsers](https://answers.gazebosim.org//question/24436/how-to-specify-urdf-link-which-attaches-to-world-ground/))
-3. 
+
+
+## _2024-04-19, 20:29_
+
+What causes a non-zero motion of the robot when populated and not given any commands? Details:
+1. The robot moves in what appears to be a tight circle.
+2. It does not respond to a "stop" command (that is, all zeros) on `/cmd_vel`.
+3. The `front_caster` link seems to be wobbling in the `z` direction and the motion might be caused by gravity and a "sinking" caster.
+   ![Sinking caster and rotating robot](assets/Part-3-unwanted-motion.png)  

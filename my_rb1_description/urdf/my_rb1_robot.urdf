@@ -29,24 +29,24 @@
         <material>Gazebo/Black</material>
     </gazebo>
     <gazebo reference="front_caster">
-        <material>Gazebo/Black</material>
+        <material>Gazebo/Green</material>
         <mu1>0.0</mu1>
         <mu2>0.0</mu2>
     </gazebo>
     <gazebo reference="rear_caster">
-        <material>Gazebo/Black</material>
+        <material>Gazebo/Green</material>
         <mu1>0.0</mu1>
         <mu2>0.0</mu2>
     </gazebo>
     <gazebo reference="right_wheel">
-        <material>Gazebo/Black</material>
+        <material>Gazebo/Red</material>
         <mu1>1.0</mu1>
         <mu2>1.0</mu2>
     </gazebo>
     <gazebo reference="left_wheel">
         <mu1>1.0</mu1>
         <mu2>1.0</mu2>
-        <material>Gazebo/Black</material>
+        <material>Gazebo/Red</material>
     </gazebo>
 
     <gazebo reference="joint_base_link_front_caster">
@@ -68,19 +68,20 @@
             <updateRate>20</updateRate>
             <leftJoint>joint_base_link_left_wheel</leftJoint>
             <rightJoint>joint_base_link_right_wheel</rightJoint>
-            <wheelSeparation>1.66</wheelSeparation> <!-- TODO: update for mesh tires -->
+            <wheelSeparation>0.4</wheelSeparation>
             <wheelDiameter>0.05</wheelDiameter>
-            <torque>10</torque>
+            <torque>5</torque>
             <commandTopic>cmd_vel</commandTopic>
             <odometryTopic>odom</odometryTopic>
             <odometryFrame>odom</odometryFrame>
-            <robotBaseFrame>base_link</robotBaseFrame> <!-- TODO: this doesn't need to be base_footprint, right? -->
+            <!-- <robotBaseFrame>base_link</robotBaseFrame> -->
+            <robotBaseFrame>base_link</robotBaseFrame>
         </plugin>
     </gazebo>
 
     <!-- Control plugin -->
     <gazebo>
-        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">  <!-- TOOD: Is this needed? -->
             <robotNamespace>/robot</robotNamespace>
             <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
         </plugin>
@@ -101,8 +102,8 @@
                         <max_angle>1.570796</max_angle> <!-- ~ 90 deg -->
                     </horizontal>
                 </scan>
-                <range> <!-- Should be outside "devide" cylinder! --> <!-- TODO: check! -->
-                    <min>0.20</min>
+                <range> <!-- Min should be outside device cylinder! -->
+                    <min>0.03</min> <!-- r = 0.025 -->
                     <max>10.0</max>
                     <resolution>0.01</resolution>
                 </range>
@@ -113,7 +114,7 @@
                 </noise>
             </ray>
             <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
-                <topicName>/laser/scan</topicName>
+                <topicName>/laser/scan</topicName> <!-- TODO: /laser/scan -> /scan -->
                 <frameName>sensor_laser</frameName>
             </plugin>
         </sensor>
