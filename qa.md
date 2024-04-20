@@ -70,6 +70,6 @@ What causes a non-zero motion of the robot when populated and not given any comm
 3. The `front_caster` link seems to be wobbling in the `z` direction, so the motion of the robot might be caused by gravity and a "sinking" caster. The robot appears to be tilted forward and might be rotating around the sinking caster.
 4. When the physics are turned off by `rosservice call /gazebo/pause_physics`, the robot stops rotating.
 5. Commenting out the differential drive doesn't stop the robot rotation!
-6. Reverting to tag `task2`, the robot doesn't move. It's static in its initial position.
+6. Reverting to tag `task2`, the robot doesn't move. It's static in its initial position. After restoring to `main-HEAD`, the motion is now a translation along the `x` axis, and the caster is not "wobbling". I did remove the `preserveFixedJoint` tags. It's becoming rather complicated. Next thing is to hunt down the change from `task2` on.
    
    ![Sinking caster and rotating robot](assets/Part-3-unwanted-motion.png)  
