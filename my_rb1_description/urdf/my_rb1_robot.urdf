@@ -49,20 +49,21 @@
         <material>Gazebo/Red</material>
     </gazebo>
 
-    <gazebo reference="joint_base_link_front_caster">
-        <preserveFixedJoint>true</preserveFixedJoint> <!-- Don't fuse to base -->
+    <!-- Preserve fixed joints -->
+    <!-- <gazebo reference="joint_base_link_front_caster">
+        <preserveFixedJoint>true</preserveFixedJoint>
     </gazebo>
 
     <gazebo reference="joint_base_link_rear_caster">
-        <preserveFixedJoint>true</preserveFixedJoint> <!-- Don't fuse to base -->
+        <preserveFixedJoint>true</preserveFixedJoint>
     </gazebo>
 
     <gazebo reference="joint_base_link_front_laser">
-        <preserveFixedJoint>true</preserveFixedJoint> <!-- Don't fuse to base -->
-    </gazebo>
+        <preserveFixedJoint>true</preserveFixedJoint>
+    </gazebo> -->
 
     <!-- Differential drive plugin -->
-    <gazebo>
+    <!-- <gazebo>
         <plugin filename="libgazebo_ros_diff_drive.so" name="differential_drive_controller">
             <alwaysOn>true</alwaysOn>
             <updateRate>20</updateRate>
@@ -74,36 +75,39 @@
             <commandTopic>cmd_vel</commandTopic>
             <odometryTopic>odom</odometryTopic>
             <odometryFrame>odom</odometryFrame>
-            <!-- <robotBaseFrame>base_link</robotBaseFrame> -->
-            <robotBaseFrame>base_link</robotBaseFrame>
+            <robotBaseFrame>base_footprint</robotBaseFrame>
         </plugin>
-    </gazebo>
+    </gazebo> -->
 
-    <!-- Control plugin -->
-    <gazebo>
-        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">  <!-- TOOD: Is this needed? -->
+    <!-- possible alternative for robotBaseFrame -->
+            <!-- <robotBaseFrame>base_link</robotBaseFrame> -->
+
+
+    <!-- Control plugin -->  <!-- TOOD: Is this needed? -->
+    <!-- <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
             <robotNamespace>/robot</robotNamespace>
             <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
         </plugin>
-    </gazebo>
+    </gazebo> -->
 
     <!-- Laser scan -->
-    <gazebo reference="front_laser">
+    <!-- <gazebo reference="front_laser">
         <sensor type="ray" name="head_hokuyo_sensor">
             <pose>0 0 0 0 0 0</pose>
-            <visualize>true</visualize> <!-- Simulate rays -->
+            <visualize>true</visualize> Simulate rays
             <update_rate>20</update_rate>
             <ray>
                 <scan>
                     <horizontal>
                         <samples>720</samples>
                         <resolution>1</resolution>
-                        <min_angle>-1.570796</min_angle> <!-- ~ -90 deg -->
-                        <max_angle>1.570796</max_angle> <!-- ~ 90 deg -->
+                        <min_angle>-1.570796</min_angle> ~ -90 deg
+                        <max_angle>1.570796</max_angle> ~ 90 deg
                     </horizontal>
                 </scan>
-                <range> <!-- Min should be outside device cylinder! -->
-                    <min>0.03</min> <!-- r = 0.025 -->
+                <range> Min should be outside device cylinder!
+                    <min>0.03</min> r = 0.025
                     <max>10.0</max>
                     <resolution>0.01</resolution>
                 </range>
@@ -114,11 +118,11 @@
                 </noise>
             </ray>
             <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
-                <topicName>/laser/scan</topicName> <!-- TODO: /laser/scan -> /scan -->
+                <topicName>/laser/scan</topicName> TODO: /laser/scan -> /scan
                 <frameName>sensor_laser</frameName>
             </plugin>
         </sensor>
-    </gazebo>
+    </gazebo> -->
 
 
     <!-- Links -->
