@@ -69,5 +69,6 @@ What causes a non-zero motion of the robot when populated and not given any comm
 2. It does not respond to a "stop" command (that is, all zeros) on `/cmd_vel`.
 3. The `front_caster` link seems to be wobbling in the `z` direction, so the motion of the robot might be caused by gravity and a "sinking" caster. The robot might be rotating around the singing caster.
 4. When the physics are turned off by `rosservice call /gazebo/pause_physics`, the robot stops rotating.
+5. Commenting out the differential drive doesn't stop the robot rotation!
    
    ![Sinking caster and rotating robot](assets/Part-3-unwanted-motion.png)  
