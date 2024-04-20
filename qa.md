@@ -67,5 +67,5 @@ On dimensions and pose:
 What causes a non-zero motion of the robot when populated and not given any commands? Details:
 1. The robot moves in what appears to be a tight circle.
 2. It does not respond to a "stop" command (that is, all zeros) on `/cmd_vel`.
-3. The `front_caster` link seems to be wobbling in the `z` direction and the motion might be caused by gravity and a "sinking" caster.
+3. The `front_caster` link seems to be wobbling in the `z` direction, so the motion of the robot might be caused by gravity and a "sinking" caster. The robot might be rotating around the singing caster.
    ![Sinking caster and rotating robot](assets/Part-3-unwanted-motion.png)  
