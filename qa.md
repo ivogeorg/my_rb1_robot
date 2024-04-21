@@ -74,3 +74,6 @@ What causes a non-zero motion of the robot when populated and not given any comm
 6. Reverting to tag `task2`, the robot doesn't move. It's static in its initial position. After restoring to `main-HEAD`, the motion is now a translation along the `x` axis, and the caster is not "wobbling". I did remove the `preserveFixedJoint` tags. It's becoming rather complicated. Next thing is to hunt down the change from `task2` on.
 7. The culprits may be the friction coefficients `mu` and `mu2`. I had added them when I added the differential drive and the `preserveFixedJoint`, zeros for casters and ones for wheels. I just commented them out (note that diff drive, scanner, and `preserveFixedJoint` are also commented out) and the motion stopped. This is nice, but I don't understand it. Yet, anyway.
    
+## Answers 2024-04-19, 20:29
+
+It is that "negligible" inertia that causes all the issues! `mu1` and `mu2` are set to 1.0 as default when unspecified. So the joints have a default friction, but don't set it to `0`. Caster wheels would ideally be `0.0`, but realistically it's like `0.1` to `0.25`. Drive wheels have higher friction of `1.0` or more. The unwanted motion is only caused by _improper mass and inertia along with unrealistic friction values_.
