@@ -125,6 +125,17 @@ _Private notes._
             <!-- other inits and starts -->
         </launch>
         ```
+16. Possible things **TODO** to fix the unwanted motion of the robot when spawned in the warehouse world and `preserveFixedJoint` and `mu`/`mu2` are specified in the URDF:
+    1. Spawning "height". Is excessive height causing the robot to fall onto the ground, resulting in an impulse that causes the motion? But why wouldn't it move if they are not specified?
+    2. RB1 contact points with ground plane. Is the robot pose unstable a priori, for example, because the casters are not protruding from the bottom of the body exactly as much as the wheels?
+    3. Front caster z-direction wobbling. Might the `base_footprint` be messing things up? Or is it some artefact of `preserveFixedJoint`?
+    4. R2D2 robot from scratch [tutorial](https://github.com/ros2/ros2_documentation/blob/rolling/source/Tutorials/Intermediate/URDF/Building-a-Visual-Robot-Model-with-URDF-from-Scratch.rst).
+    5. Friction in Gazebo. Is there a decent enough explanation of how friction and collision are handled by default in Gazebo? Note that there are several libraries, one of which is [Bullet](https://www.google.com/search?q=bulletphysics&oq=bulletphy).
+    6. Translation of URDF to SDF. Note where `mu` and `mu2` end up!!!
+    7. Basic shapes and more complex models in Gazebo. Their definitions (if readable) should give a lot of clues as to what might be going wrong.
+    8. Masses of RD1 links. What does the massless `base_footprint` do, being the root origin of the robot link tree? What if the most massive `base_link` is made the root, instead?
+
+
 
 
 ### References
