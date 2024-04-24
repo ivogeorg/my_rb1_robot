@@ -137,8 +137,7 @@ _Private notes._
     9. Links with contact points (wheels, casters). No motion if fixed joints are lumped and there are no friction coefficients specified. What if the caster links remain lumped and the friction coefficients are specified only for the wheels? Can `/cmd_vel` motion be realized without specifying friction for the casters? What is the default friction, if not specified?
     10. The casters. Check the construction of the casters in the example solution. Should the two wheels be links in their own right instead of two `collision` + `visual` elements under the same link?
     11. The wheels. What is the "first" direction of friction? Is it "along" the tangent of the spinning wheel at the point of contact with the ground plane? What is the "second"? Is it the orthogonal to the spinning wheel, specifying essentially that the wheels can rotate with little friction but cannot slide sideways (orthogonally to plane of rotation) due to much higher friction? If so, should `mu` be smaller and `mu2` much larger?
-
-
+    12. Link tree. What strange dynamics can be caused by the _improper construction_ of the link tree? Some instability, some "hidden" jitter, etc.? What are the best practices?
 
 
 ### References
