@@ -154,3 +154,4 @@ _Private notes._
    3. ROS [REP-120 # `base_footprint`](https://www.ros.org/reps/rep-0120.html#base-footprint) for a _humanoid_ robot.
 7. [List of ROS enhancement proposals (REPs)](https://ros.org/reps/rep-0000.html). 
 8. URDF [link](https://wiki.ros.org/urdf/XML/link).
+9. URDF [joint](https://wiki.ros.org/urdf/XML/joint).
