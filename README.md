@@ -176,10 +176,12 @@ _Private notes._
 17. In the [Differential Drive tutorial](https://classic.gazebosim.org/tutorials?tut=ros_gzplugins#DifferentialDrive), the example shows `base_footprint` as the default value for `robotBaseFrame`:
     `<robotBaseFrame>base_footprint</robotBaseFrame>`
 18. Publishing to `/cmd_vel` causes the differential drive to move the robot in reverse. This seems to be a well-known problem but there doesn't seem to be a simple universal solution. Things tried:
-    1. Rotating the `joint_base_footpring_base_link` 180 degrees => The base looks the other way.
+    1. Rotating the `joint_base_footprint_base_link` 180 degrees => The base looks the other way.
     2. Rotating the `base_link` around its own frame => Doesn't change the direction.
+    2. Rotating the `base_footprint` around its own frame => Doesn't change the direction.
     3. Preserving the fixed the `joint_base_footpring_base_link` => The robot isn't spawned.
     4. Reversing the sign of the command => Works fine, but not up to checkpoint requirement.
+    5. **Yawing the two wheels 180 degrees in their joints works.**
 
 ### References
 

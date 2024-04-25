@@ -62,6 +62,10 @@
         <preserveFixedJoint>true</preserveFixedJoint>
     </gazebo>
 
+    <!-- <gazebo reference="joint_base_footprint_base_link">
+        <preserveFixedJoint>true</preserveFixedJoint>
+    </gazebo> -->    
+
     <!-- Differential drive plugin -->
     <gazebo>
         <plugin filename="libgazebo_ros_diff_drive.so" name="differential_drive_controller">
@@ -79,6 +83,7 @@
             <odometryFrame>odom</odometryFrame>
             <!-- Robot frame to calculate odometry from, defaults to `base_footprint` -->
              <robotBaseFrame>base_footprint</robotBaseFrame>
+             <!-- <robotBaseFrame>base_link</robotBaseFrame> -->
             <!-- Odometry source, 0=ENCODER, 1=WORLD (default) -->
             <odometrySource>1</odometrySource>
             <!-- Set to true to publish transforms for the wheel links, defaults to false -->
@@ -100,22 +105,22 @@
     </gazebo> -->
 
     <!-- Laser scan -->
-    <!-- <gazebo reference="front_laser">
+    <gazebo reference="front_laser">
         <sensor type="ray" name="head_hokuyo_sensor">
             <pose>0 0 0 0 0 0</pose>
-            <visualize>true</visualize> Simulate rays
+            <visualize>false</visualize> <!-- Simulate rays -->
             <update_rate>20</update_rate>
             <ray>
                 <scan>
                     <horizontal>
                         <samples>720</samples>
                         <resolution>1</resolution>
-                        <min_angle>-1.570796</min_angle> ~ -90 deg
-                        <max_angle>1.570796</max_angle> ~ 90 deg
+                        <min_angle>-1.570796</min_angle> <!-- ~ -90 deg -->
+                        <max_angle>1.570796</max_angle> <!-- ~ 90 deg -->
                     </horizontal>
                 </scan>
-                <range> Min should be outside device cylinder!
-                    <min>0.03</min> r = 0.025
+                <range> <!-- Min should be outside device cylinder! -->
+                    <min>0.03</min> <!-- r = 0.025 -->
                     <max>10.0</max>
                     <resolution>0.01</resolution>
                 </range>
@@ -126,11 +131,12 @@
                 </noise>
             </ray>
             <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
-                <topicName>/laser/scan</topicName> TODO: /laser/scan -> /scan
+                <!-- <topicName>/laser/scan</topicName> -->
+                <topicName>/scan</topicName>
                 <frameName>sensor_laser</frameName>
             </plugin>
         </sensor>
-    </gazebo> -->
+    </gazebo>
 
 
     <!-- Links -->
@@ -138,6 +144,7 @@
     <!--Link: base_footprint-->
     <link name="base_footprint">
         <visual>
+            <!-- <origin xyz="0 0 0" rpy="0 0 3.14159"/> -->
             <geometry>
                 <cylinder length="0.001" radius="0.25"/>
             </geometry>
@@ -148,12 +155,14 @@
     <!--Link: base_link-->
     <link name="base_link">
         <inertial>
-            <mass value="24.926"/>
-            <inertia ixx="0.5764" ixy="0" ixz="0" iyy="0.5764" iyz="0" izz="0.7789"/>
+            <!-- <mass value="24.926"/> -->
+            <!-- <inertia ixx="0.5764" ixy="0" ixz="0" iyy="0.5764" iyz="0" izz="0.7789"/> -->
+            <mass value="22.5"/>
+            <inertia ixx="0.5203125" ixy="0" ixz="0" iyy="0.5203125" iyz="0" izz="0.703125"/>
         </inertial>
 
         <collision>
-            <!-- <origin xyz="0 0 0.15" rpy="0 0 0"/> -->
+            <!-- <origin xyz="0 0 0" rpy="0 0 3.14159"/> -->
             <geometry>
                 <cylinder length="0.3" radius="0.25"/>
                 <!-- <sphere radius=""/> -->
@@ -161,7 +170,7 @@
         </collision>
 
         <visual>
-            <!-- <origin xyz="1 1 0.15" rpy="0 0 0"/> -->
+            <!-- <origin xyz="0 0 0" rpy="0 0 3.14159"/> -->
             <geometry>
                 <cylinder length="0.3" radius="0.25"/>
                 <!-- <sphere radius=""/> -->
@@ -173,8 +182,10 @@
     <!--Link: right_wheel-->
     <link name="right_wheel">
         <inertial>
-            <mass value="0.021"/>
-            <inertia ixx="0.000004" ixy="0" ixz="0" iyy="0.000004" iyz="0" izz="0.000007"/>
+            <!-- <mass value="0.021"/>
+            <inertia ixx="0.000004" ixy="0" ixz="0" iyy="0.000004" iyz="0" izz="0.000007"/> -->
+            <mass value="0.5"/>
+            <inertia ixx="0.0001042" ixy="0" ixz="0" iyy="0.0001042" iyz="0" izz="0.0001563"/>
         </inertial>
 
         <collision>
@@ -198,8 +209,10 @@
     <!--Link: left_wheel-->
     <link name="left_wheel">
         <inertial>
-            <mass value="0.021"/>
-            <inertia ixx="0.000004" ixy="0" ixz="0" iyy="0.000004" iyz="0" izz="0.000007"/>
+            <!-- <mass value="0.021"/>
+            <inertia ixx="0.000004" ixy="0" ixz="0" iyy="0.000004" iyz="0" izz="0.000007"/> -->
+            <mass value="0.5"/>
+            <inertia ixx="0.0001042" ixy="0" ixz="0" iyy="0.0001042" iyz="0" izz="0.0001563"/>
         </inertial>
 
         <collision>
@@ -223,8 +236,10 @@
     <!--Link: front_caster-->
     <link name="front_caster">
         <inertial>
-            <mass value="0.006"/>
-            <inertia ixx="0.0000005" ixy="0" ixz="0" iyy="0.0000005" iyz="0" izz="0.0000005"/>
+            <!-- <mass value="0.006"/>
+            <inertia ixx="0.0000005" ixy="0" ixz="0" iyy="0.0000005" iyz="0" izz="0.0000005"/> -->
+            <mass value="0.5"/>
+            <inertia ixx="0.000045" ixy="0" ixz="0" iyy="0.000045" iyz="0" izz="0.000045"/>
         </inertial>
 
         <!-- Front caster wheel support -->
@@ -263,8 +278,10 @@
     <!--Link: rear_caster-->
     <link name="rear_caster">
         <inertial>
-            <mass value="0.006"/>
-            <inertia ixx="0.0000005" ixy="0" ixz="0" iyy="0.0000005" iyz="0" izz="0.0000005"/>
+            <!-- <mass value="0.006"/>
+            <inertia ixx="0.0000005" ixy="0" ixz="0" iyy="0.0000005" iyz="0" izz="0.0000005"/> -->
+            <mass value="0.5"/>
+            <inertia ixx="0.000045" ixy="0" ixz="0" iyy="0.000045" iyz="0" izz="0.000045"/>
         </inertial>
 
         <!-- Rear caster support -->
@@ -303,8 +320,10 @@
     <!--Link: front_laser-->
     <link name="front_laser">
         <inertial>
-            <mass value="0.021"/>
-            <inertia ixx="0.000004" ixy="0" ixz="0" iyy="0.000004" iyz="0" izz="0.000007"/>
+            <!-- <mass value="0.021"/>
+            <inertia ixx="0.000004" ixy="0" ixz="0" iyy="0.000004" iyz="0" izz="0.000007"/> -->
+            <mass value="0.5"/>
+            <inertia ixx="0.0001042" ixy="0" ixz="0" iyy="0.0001042" iyz="0" izz="0.0001563"/>
         </inertial>
 
         <collision>
@@ -345,7 +364,7 @@
 
     <!--Joint: base_link/right_wheel-->
     <joint name="joint_base_link_right_wheel" type="continuous">
-        <origin xyz="0 -0.2 -0.15" rpy="1.5708 0 0" />
+        <origin xyz="0 -0.2 -0.15" rpy="1.5708 0 3.14159" />
         <parent link="base_link" />
         <child link="right_wheel" />
         <axis xyz="0 0 1" rpy="0 0 0" />
@@ -355,7 +374,7 @@
 
     <!--Joint: base_link/left_wheel-->
     <joint name="joint_base_link_left_wheel" type="continuous">
-        <origin xyz="0 0.2 -0.15" rpy="1.5708 0 0" />
+        <origin xyz="0 0.2 -0.15" rpy="1.5708 0 3.14159" />
         <parent link="base_link" />
         <child link="left_wheel" />
         <axis xyz="0 0 1" rpy="0 0 0" />
