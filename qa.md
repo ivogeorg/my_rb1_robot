@@ -76,4 +76,9 @@ What causes a non-zero motion of the robot when populated and not given any comm
    
 ## Answers 2024-04-19, 20:29
 
-It is that "negligible" inertia that causes all the issues! `mu1` and `mu2` are set to 1.0 as default when unspecified. So the joints have a default friction, but don't set it to `0`. Caster wheels would ideally be `0.0`, but realistically it's like `0.1` to `0.25`. Drive wheels have higher friction of `1.0` or more. The unwanted motion is only caused by _improper mass and inertia along with unrealistic friction values_.
+It is that "negligible" inertia that causes all the issues! `mu1` and `mu2` are set to 1.0 as default when unspecified. So the joints have a default friction, but don't set it to `0`. Caster wheels would ideally be `0.0`, but realistically it's like `0.1` to `0.25`. Drive wheels have higher friction of `1.0` or more. The unwanted motion is only caused by _improper mass and inertia along with unrealistic friction values_. (Not very helpful, and not obviously true.)
+
+## _2024-04-23, 10:11_
+
+1. What do the friction coefficients for the child links of moving and preserved fixed joints (`<preserveFixedJoint>true</preserveFixedJoint>`) actually specify? Is it the friction of the child link at all of its points of contact with other objects? If yes, what how are the _"first"_ and _"second"_ directions of friction interpreted? _(Take a look at the source code?)_
+
