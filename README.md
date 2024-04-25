@@ -33,6 +33,30 @@ _Notes of interest to the reviewer!_
 
 ![The robot at the completion of Part 2](assets/Part-2-screenshot.png)  
 
+### Submittion notes - Part 3
+
+_Notes of interest to the reviewer!_
+
+```
+roslaunch my_rb1_gazebo my_rb1_robot_warehouse.launch  
+rostopic pub /cmd_vel geometry_msgs/Twist "linear:
+  x: 0.2
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0"
+rostopic echo /scan
+rostopic echo /odom
+```
+
+1. When the `preserveFixedJoint` were added for the casters to specify friction coefficients `mu` and `mu2` for Gazebo, this caused an unwanted motion of the robot at spawn time, which could not be eliminated trivially. There is a lot of detail in the [Implementation notes](#implementation-notes) secion below on what problems were surmised and solutions attempted. Long story short, following the suggestion [here](https://answers.gazebosim.org//question/26449/fixed-joints-are-detaching-and-moving/) and increasing the masses for the wheels and casters relative to the base worked. Initially, equal density for all solid-shape links was assumed and the ratio of link volumes was used to apportion the mass, but this resulted in very small masses and inertias for the links with points of contact with the ground plane. It makes sense that the dynamic range of the physics simulator would have problems with links at very different resolutions.
+2. The `<remap from="/laser/scan" to="/scan" />` in the `robot_state_publisher` node didn't work, so the name of the published topic of the laser plugin was simply named `/scan`.
+3. Sending `/cmd_vel` for a positive (forward) motion in the `x` direction actually caused the differential drive robot to move backward. This was solved by yawing the wheels 180 degrees in their corresponding joints.
+
+![The robot at the completion of Part 2](assets/Part-3-screenshot.png)  
+
 
 ### Implementation notes
 
@@ -136,7 +160,7 @@ _Private notes._
     6. Translation of URDF to SDF. Note where `mu` and `mu2` end up!!!
     7. Basic shapes and more complex models in Gazebo. Their definitions (if readable) should give a lot of clues as to what might be going wrong.
     8. ~Masses of RD1 links. What does the massless `base_footprint` do, being the root origin of the robot link tree? What if the most massive `base_link` is made the root, instead?~
-       1. This [Gazebo wiki entry](https://answers.gazebosim.org//question/26449/fixed-joints-are-detaching-and-moving/) mentions dynamics problems with links with very small masses. _Might it make sense to make the wheels and casters heavier?_ **It seems like the changes below have more or less eliminated the unwanted motion though there is a rotational bias in translational commands.**
+       1. This [Gazebo wiki entry](https://answers.gazebosim.org//question/26449/fixed-joints-are-detaching-and-moving/) mentions dynamics problems with links with very small masses. _Might it make sense to make the wheels and casters heavier?_ **The changes below have eliminated the unwanted motion.**
           1. New masses: wheel=0.5, caster=0.5, laser=0.5, base=25-2.5=22.5.
           2. New inertias:
              1. The following links are solid cylinders: `base_link`, `right_wheel`, `left_wheel`, `front_laser` (this is taken from the notebook).
