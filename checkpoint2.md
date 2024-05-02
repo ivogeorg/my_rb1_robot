@@ -18,7 +18,49 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
       bool result
       ```
    6. The `CMakeLists.txt` and `package.xml` files in the [`my_cusom_srv_msg_pkg`](https://github.com/ivogeorg/my_custom_srv_msg_pkg) contain the right settings for the generation and usage of custom service messages.
+      1. `CMakeLists.txt`:
+         1. ```
+            find_package(catkin REQUIRED COMPONENTS
+                roscpp
+                **message_generation**
+            )
+            ```
+         2. ```
+            **add_service_files**(
+                FILES
+                **Rotate.srv**
+            )
+            ```
+         3. ```
+            **generate_messages**(
+                DEPENDENCIES
+            )
+            ```
+         4. (possibly not strictly necessary if messages in same package)
+            ```
+            catkin_package(
+                CATKIN_DEPENDS roscpp
+            )
+            ```
+         5. For package compilation:
+            `add_executable` 
+            `add_dependencies`
+            `target_link_libraries` 
+      2. `package.xml`:
+         1. ```
+            <package>
+                <build_depend>message_generation</build_depend>
+                <build_export_depend>message_runtime</build_export_depend>
+                <exec_depend>message_runtime</exec_depend>
+            </package>
+            ```
+
+
+
+
+
    7. The Python file [`robot_control_class.py`](https://github.com/ivogeorg/robot_control/blob/441c9c5170ed0f31f4a457d1f1c2077638845141/robot_control_class.py#L37) contains good code to implement in [`rotate_service.cpp`](src/rotate_service.cpp).
+   8. The file [`bb8_move_circle_class.cpp`](https://github.com/ivogeorg/my_cpp_class/blob/main/src/bb8_move_circle_class.cpp) file contains a decent template for a node class.
 2. The file `rotate_service.cpp`:
    1. Will have a definition of class `RB1RotateService` and `main` function instantiating it.
    2. Will initialize the topic pub and sub in the constructor. Remember to have an explicit destructor.
