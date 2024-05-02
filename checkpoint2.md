@@ -22,21 +22,21 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
          1. ```
             find_package(catkin REQUIRED COMPONENTS
                 roscpp
-                **message_generation**
+                message_generation  # <--
             )
             ```
          2. ```
-            **add_service_files**(
+            add_service_files(  # <--
                 FILES
-                **Rotate.srv**
+                Rotate.srv  # <--
             )
             ```
          3. ```
-            **generate_messages**(
+            generate_messages(  # <--
                 DEPENDENCIES
             )
             ```
-         4. (possibly not strictly necessary if messages in same package)
+         4. (possibly not strictly necessary if messages in the same package)
             ```
             catkin_package(
                 CATKIN_DEPENDS roscpp
@@ -49,9 +49,9 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
       2. `package.xml`:
          1. ```
             <package>
-                <build_depend>message_generation</build_depend>
-                <build_export_depend>message_runtime</build_export_depend>
-                <exec_depend>message_runtime</exec_depend>
+                <build_depend>message_generation</build_depend>  # <--
+                <build_export_depend>message_runtime</build_export_depend>  # <--
+                <exec_depend>message_runtime</exec_depend>  # <--
             </package>
             ```
 
