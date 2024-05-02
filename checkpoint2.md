@@ -59,7 +59,12 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
 
 
 
-   7. The Python file [`robot_control_class.py`](https://github.com/ivogeorg/robot_control/blob/441c9c5170ed0f31f4a457d1f1c2077638845141/robot_control_class.py#L37) contains good code to implement in [`rotate_service.cpp`](src/rotate_service.cpp).
+   7. The Python file [`robot_control_class.py`](https://github.com/ivogeorg/robot_control/blob/441c9c5170ed0f31f4a457d1f1c2077638845141/robot_control_class.py#L37) contains good code to implement in [`rotate_service.cpp`](src/rotate_service.cpp). Note that `get_odom` assumes `base_link` to be the root, while the RB1 has `base_fooprint` as the root link. `get_odom` gets the transform between `/odom` and the root link, which gives `rotate` the ability to rotate from any starting position (i.e. in the frame of the robot). 
+   8. The Python class mentioned uses some advanced `tf` functionality, specifically `waitForTransform` and `lookupTransform`. Resources for learning how to use them:
+      1. `tf` and `Time` [tutorials](http://wiki.ros.org/tf/Tutorials/tf%20and%20Time%20%28C%2B%2B%29).
+      2. [`tf2` time travel (C++)](http://wiki.ros.org/tf/Tutorials/tf%20and%20Time%20%28C%2B%2B%29).
+      3. [`tf2` time travel (Python)](http://wiki.ros.org/tf2/Tutorials/Time%20travel%20with%20tf2%20%28Python%29).
+      4. YouTube video [All you need to know about TF and TF2 in ROS | Tutorial](https://www.youtube.com/watch?v=_t4HZ8r_qFM) to understand which one to use.
    8. The file [`bb8_move_circle_class.cpp`](https://github.com/ivogeorg/my_cpp_class/blob/main/src/bb8_move_circle_class.cpp) file contains a decent template for a node class.
 2. The file `rotate_service.cpp`:
    1. Will have a definition of class `RB1RotateService` and `main` function instantiating it.
@@ -67,3 +72,4 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
    3. Will advertise the service in the constructor.
    2. Will have a `get_odom` and `rotate` methods.
 3. The file `rotate_service.launch` will launch the service.
+4. The include `#include "my_rb1_ros/Rotate.h"` statement resolves to `/home/user/catkin_ws/devel/include/my_rb1_ros/Rotate.h`, where the custom service message infrastructure files are stored. 
