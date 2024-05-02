@@ -64,7 +64,8 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
       1. `tf` and `Time` [tutorials](http://wiki.ros.org/tf/Tutorials/tf%20and%20Time%20%28C%2B%2B%29).
       2. [`tf2` time travel (C++)](http://wiki.ros.org/tf/Tutorials/tf%20and%20Time%20%28C%2B%2B%29).
       3. [`tf2` time travel (Python)](http://wiki.ros.org/tf2/Tutorials/Time%20travel%20with%20tf2%20%28Python%29).
-      4. YouTube video [All you need to know about TF and TF2 in ROS | Tutorial](https://www.youtube.com/watch?v=_t4HZ8r_qFM) to understand which one to use.
+      4. YouTube video [All you need to know about TF and TF2 in ROS | Tutorial](https://www.youtube.com/watch?v=_t4HZ8r_qFM) to understand which one to use. `tf2` is a new version of `tf` and supercedes it.
+      5. [`tf2` Tutorials](http://wiki.ros.org/tf2/Tutorials) with [Introduction](http://wiki.ros.org/tf2/Tutorials/Introduction%20to%20tf2) and branches for C++ and Python.
    8. The file [`bb8_move_circle_class.cpp`](https://github.com/ivogeorg/my_cpp_class/blob/main/src/bb8_move_circle_class.cpp) file contains a decent template for a node class.
 2. The file `rotate_service.cpp`:
    1. Will have a definition of class `RB1RotateService` and `main` function instantiating it.
