@@ -74,6 +74,12 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
             2. [INSTALL.md](https://github.com/orocos/orocos_kinematics_dynamics/blob/master/orocos_kdl/INSTALL.md) on Github. The dependency on Eigen states `libeigen3-dev`.
       2. The [`<cmath>`](https://cplusplus.com/reference/cmath/) library.
          1. The constant `M_PI` might or might not be defined. If not, use a `#define` with a sufficiently precise value.
+      3. There is very little needed to manipulate the geometric primitives for the `tf` code, for which installing the KD library may be an overkill:
+         1. The `tf` function `lookupTransform` fills a `Transform` object parameter reference with the resulting _translation_ and _rotation_. The latter is returned as either a 3x3 matrix or a quaternion, so has to be converted to the corresponding _yaw_ angle (in the robot's frame) to monitor the progress of the robot's rotation. The [functionality of the PyKDL library](https://docs.ros.org/en/diamondback/api/kdl/html/python/geometric_primitives.html) (which is just a Python binding for `orocos_kdl` (see above)) used on this [`line`](https://github.com/ivogeorg/robot_control/blob/441c9c5170ed0f31f4a457d1f1c2077638845141/robot_control_class.py#L225) can be implemented locally.
+         2. The method [`lookupTransform`](https://docs.ros.org/en/indigo/api/tf/html/c++/classtf_1_1Transformer.html#ac01a9f8709a828c427f1a5faa0ced42b).
+         3. The reference for the [`Tranform`](https://docs.ros.org/en/indigo/api/tf/html/c++/classtf_1_1Transform.html) class.
+         4. The [`tranform_datatypes.h`](https://docs.ros.org/en/indigo/api/tf/html/c++/transform__datatypes_8h_source.html) header.
+         5. `#include <tf.h>`.
    8. The file [`bb8_move_circle_class.cpp`](https://github.com/ivogeorg/my_cpp_class/blob/main/src/bb8_move_circle_class.cpp) file contains a decent template for a node class.
 2. The file `rotate_service.cpp`:
    1. Will have a definition of class `RB1RotateService` and `main` function instantiating it.
