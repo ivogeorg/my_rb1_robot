@@ -66,6 +66,14 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
       3. [`tf2` time travel (Python)](http://wiki.ros.org/tf2/Tutorials/Time%20travel%20with%20tf2%20%28Python%29).
       4. YouTube video [All you need to know about TF and TF2 in ROS | Tutorial](https://www.youtube.com/watch?v=_t4HZ8r_qFM) to understand which one to use. `tf2` is a new version of `tf` and supercedes it.
       5. [`tf2` Tutorials](http://wiki.ros.org/tf2/Tutorials) with [Introduction](http://wiki.ros.org/tf2/Tutorials/Introduction%20to%20tf2) and branches for C++ and Python.
+   9. The following contain supporting code for working with frame transformations:
+      1. The [`orocos_kdl`](https://www.orocos.org/kdl.html) library. 
+         1. On [Github](https://github.com/orocos/orocos_kinematics_dynamics).
+         2. Installation:
+            1. Installation [manual](https://www.orocos.org/wiki/Installation_Manual.html). Note the dependency on [`eigen2`](https://eigen.tuxfamily.org/index.php?title=Main_Page).
+            2. [INSTALL.md](https://github.com/orocos/orocos_kinematics_dynamics/blob/master/orocos_kdl/INSTALL.md) on Github. The dependency on Eigen states `libeigen3-dev`.
+      2. The [`<cmath>`](https://cplusplus.com/reference/cmath/) library.
+         1. The constant `M_PI` might or might not be defined. If not, use a `#define` with a sufficiently precise value.
    8. The file [`bb8_move_circle_class.cpp`](https://github.com/ivogeorg/my_cpp_class/blob/main/src/bb8_move_circle_class.cpp) file contains a decent template for a node class.
 2. The file `rotate_service.cpp`:
    1. Will have a definition of class `RB1RotateService` and `main` function instantiating it.
