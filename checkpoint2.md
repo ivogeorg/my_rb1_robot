@@ -85,6 +85,10 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
    1. Will have a definition of class `RB1RotateService` and `main` function instantiating it.
    2. Will initialize the topic pub and sub in the constructor. Remember to have an explicit destructor.
    3. Will advertise the service in the constructor.
-   2. Will have a `get_odom` and `rotate` methods.
+   4. May have a `get_odom` and `rotate` methods, depending on the functionality `tf2_ros` provides.
 3. The file `rotate_service.launch` will launch the service.
 4. The include `#include "my_rb1_ros/Rotate.h"` statement resolves to `/home/user/catkin_ws/devel/include/my_rb1_ros/Rotate.h`, where the custom service message infrastructure files are stored. 
+5. ~**Question:** Will a _`tf2` broadcaster_ need to be started in `my_rb1_robot_warehouse.launch` so that a _`tf2` listener_ can be used to compute the transform from the world frame to the RB1 frame? Is the `robot_state_publisher` doing that already? Btw, how is broadcasting of the world frame started? Is it started by default?~
+   1. After launch, `/robot_state_publisher` publishes `/tf` and `/tf_static`, both of type `tf2_msgs/TFMessage`.
+   2. After launch, `/gazebo` publishes `/tf` and `/odom`, the latter of type `nav_msgs/Odometry`.
+
