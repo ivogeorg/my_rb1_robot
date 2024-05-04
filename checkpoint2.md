@@ -66,6 +66,13 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
       3. [`tf2` time travel (Python)](http://wiki.ros.org/tf2/Tutorials/Time%20travel%20with%20tf2%20%28Python%29).
       4. YouTube video [All you need to know about TF and TF2 in ROS | Tutorial](https://www.youtube.com/watch?v=_t4HZ8r_qFM) to understand which one to use. `tf2` is a new version of `tf` and supercedes it. In fact, `tf` is **explicitly deprecated** in favor of `tf2` and `tf2` is de facto the _implementation under the hood_. `tf2` or, actually, `tf2_ros` is likely easier to use to implement a tranform listener, possibly rendering unnecessary the geometric primitive manipulation overhead of the `PyKDL` library. `tf2` provides those manipulations. `tf2` is also strongly preferred over `tf` for starting out.
       5. [`tf2` starting page](https://wiki.ros.org/tf2). [`tf2` Tutorials](http://wiki.ros.org/tf2/Tutorials) with [Introduction](http://wiki.ros.org/tf2/Tutorials/Introduction%20to%20tf2) and branches for C++ and Python.
+      6. The `tf` and `tf_static` topics are implented by `tf2` and are of type `tf2_msgs/TFMessage`.
+      7. The [`tf2` listener tutorial](https://wiki.ros.org/tf2/Tutorials/Writing%20a%20tf2%20listener%20%28C%2B%2B%29) is pretty clear about the implementation that is needed.
+         1. The first two arguments to `lookupTranform` are the _target_ and _source_frames. In what order should `odom` and `base_footprint` be specified for the purpose of rotating the robot around its own frame? Two discussions on this issue:
+            1. [Confusing target and source frames](https://answers.ros.org/question/296844/time-travel-with-tf-tutorial-confusing-target-and-source-frames/).
+            2. [The problem with `lookupTranform`](https://answers.ros.org/question/194046/the-problem-of-transformerlookuptransform/).
+         2. `lookupTranform` returns a `geometry_msgs::TransformStamped`, which contains a `Vector3` for translation and a `Quaternion` for rotation.
+            
    9. The following contain supporting code for working with frame transformations:
       1. The [`orocos_kdl`](https://www.orocos.org/kdl.html) library. 
          1. On [Github](https://github.com/orocos/orocos_kinematics_dynamics).
@@ -81,13 +88,17 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
          4. The [`tranform_datatypes.h`](https://docs.ros.org/en/indigo/api/tf/html/c++/transform__datatypes_8h_source.html) header.
          5. `#include <tf.h>`.
    8. The file [`bb8_move_circle_class.cpp`](https://github.com/ivogeorg/my_cpp_class/blob/main/src/bb8_move_circle_class.cpp) file contains a decent template for a node class.
+
 2. The file `rotate_service.cpp`:
    1. Will have a definition of class `RB1RotateService` and `main` function instantiating it.
    2. Will initialize the topic pub and sub in the constructor. Remember to have an explicit destructor.
    3. Will advertise the service in the constructor.
    4. May have a `get_odom` and `rotate` methods, depending on the functionality `tf2_ros` provides.
+
 3. The file `rotate_service.launch` will launch the service.
+
 4. The include `#include "my_rb1_ros/Rotate.h"` statement resolves to `/home/user/catkin_ws/devel/include/my_rb1_ros/Rotate.h`, where the custom service message infrastructure files are stored. 
+
 5. ~**Question:** Will a _`tf2` broadcaster_ need to be started in `my_rb1_robot_warehouse.launch` so that a _`tf2` listener_ can be used to compute the transform from the world frame to the RB1 frame? Is the `robot_state_publisher` doing that already? Btw, how is broadcasting of the world frame started? Is it started by default?~
    1. After launch, `/robot_state_publisher` publishes `/tf` and `/tf_static`, both of type `tf2_msgs/TFMessage`.
    2. After launch, `/gazebo` publishes `/tf` and `/odom`, the latter of type `nav_msgs/Odometry`.
