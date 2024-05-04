@@ -64,8 +64,8 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
       1. `tf` and `Time` [tutorials](http://wiki.ros.org/tf/Tutorials/tf%20and%20Time%20%28C%2B%2B%29).
       2. [`tf2` time travel (C++)](http://wiki.ros.org/tf/Tutorials/tf%20and%20Time%20%28C%2B%2B%29).
       3. [`tf2` time travel (Python)](http://wiki.ros.org/tf2/Tutorials/Time%20travel%20with%20tf2%20%28Python%29).
-      4. YouTube video [All you need to know about TF and TF2 in ROS | Tutorial](https://www.youtube.com/watch?v=_t4HZ8r_qFM) to understand which one to use. `tf2` is a new version of `tf` and supercedes it.
-      5. [`tf2` Tutorials](http://wiki.ros.org/tf2/Tutorials) with [Introduction](http://wiki.ros.org/tf2/Tutorials/Introduction%20to%20tf2) and branches for C++ and Python.
+      4. YouTube video [All you need to know about TF and TF2 in ROS | Tutorial](https://www.youtube.com/watch?v=_t4HZ8r_qFM) to understand which one to use. `tf2` is a new version of `tf` and supercedes it. In fact, `tf` is **explicitly deprecated** in favor of `tf2` and `tf2` is de facto the _implementation under the hood_. `tf2` or, actually, `tf2_ros` is likely easier to use to implement a tranform listener, possibly rendering unnecessary the geometric primitive manipulation overhead of the `PyKDL` library. `tf2` provides those manipulations. `tf2` is also strongly preferred over `tf` for starting out.
+      5. [`tf2` starting page](https://wiki.ros.org/tf2). [`tf2` Tutorials](http://wiki.ros.org/tf2/Tutorials) with [Introduction](http://wiki.ros.org/tf2/Tutorials/Introduction%20to%20tf2) and branches for C++ and Python.
    9. The following contain supporting code for working with frame transformations:
       1. The [`orocos_kdl`](https://www.orocos.org/kdl.html) library. 
          1. On [Github](https://github.com/orocos/orocos_kinematics_dynamics).

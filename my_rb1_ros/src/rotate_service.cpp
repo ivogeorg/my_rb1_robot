@@ -3,6 +3,7 @@
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 #include <ros/ros.h>
+#include <transform_listener.h>
 
 class RB1RotateService {
 private:
@@ -24,8 +25,8 @@ private:
 public:
   RB1RotateService() {
     // TODO
-    __svc = __nh.advertiseService("/rotate_robot", &RB1RotateService::serviceCallback,
-                                  this);
+    __svc = __nh.advertiseService("/rotate_robot",
+                                  &RB1RotateService::serviceCallback, this);
     ROS_INFO("Service /rotate_robot: READY");
     __vel_pub = __nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
     __odom_sub = __nh.subscribe("/odom", 1000, )
