@@ -68,10 +68,10 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
       5. [`tf2` starting page](https://wiki.ros.org/tf2). [`tf2` Tutorials](http://wiki.ros.org/tf2/Tutorials) with [Introduction](http://wiki.ros.org/tf2/Tutorials/Introduction%20to%20tf2) and branches for C++ and Python.
       6. The `tf` and `tf_static` topics are implented by `tf2` and are of type `tf2_msgs/TFMessage`.
       7. The [`tf2` listener tutorial](https://wiki.ros.org/tf2/Tutorials/Writing%20a%20tf2%20listener%20%28C%2B%2B%29) is pretty clear about the implementation that is needed.
-         1. The first two arguments to `lookupTranform` are the _target_ and _source_frames. In what order should `odom` and `base_footprint` be specified for the purpose of rotating the robot around its own frame? Two discussions on this issue:
+         1. The first two arguments to `lookupTranform` are the _target_ and _source_ frames. In what order should `odom` and `base_footprint` be specified for the purpose of rotating the robot around its own frame? Two discussions on this issue:
             1. [Confusing target and source frames](https://answers.ros.org/question/296844/time-travel-with-tf-tutorial-confusing-target-and-source-frames/).
             2. [The problem with `lookupTranform`](https://answers.ros.org/question/194046/the-problem-of-transformerlookuptransform/).
-         2. `lookupTranform` returns a `geometry_msgs::TransformStamped`, which contains a `Vector3` for translation and a `Quaternion` for rotation.
+         2. `lookupTranform` returns a `geometry_msgs::TransformStamped`, which contains a `Vector3` for translation and a `Quaternion` for rotation. The z-axis rotation angle has to be extracted from the latter.
             
    9. The following contain supporting code for working with frame transformations:
       1. The [`orocos_kdl`](https://www.orocos.org/kdl.html) library. 
