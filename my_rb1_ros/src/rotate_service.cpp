@@ -1,5 +1,7 @@
 #include "my_rb1_ros/Rotate.h"
+#include "ros/duration.h"
 #include "ros/subscriber.h"
+#include "tf2/exceptions.h"
 #include "tf2_ros/buffer.h"
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
@@ -11,6 +13,7 @@
 
 class RB1RotateService {
 private:
+  // NOTE: Private member names start with double underscore ("__")
   // ROS Objects
   ros::NodeHandle __nh;
   ros::Rate __rate;
@@ -36,7 +39,7 @@ private:
   tf2_ros::TransformListener __tf_listen;
 
   // Other
-  float __angular_tolerance;
+  float32 __angular_tolerance;
 
 public:
   RB1RotateService()
@@ -44,7 +47,7 @@ public:
         __rot_svc(__nh.advertiseService(
             "/rotate_robot", &RB1RotateService::serviceCallback, this)),
         __vel_pub(__nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1)),
-        __tf_listen(__tf_buf), __angular_tolerance(deg_to_rad(2)) {
+        __tf_listen(__tf_buf), __angular_tolerance(__deg2rad(2)) {
     ROS_INFO("Service /rotate_robot: READY");
   }
 
@@ -54,20 +57,36 @@ public:
 
   bool serviceCallback(my_rb1_ros::Rotate::Request &req,
                        my_rb1_ros::Rotate::Response &res) {
-    // TODO
+    // 1. get_odom: get tf from /odom to base_footprint
+    __get_odom();
+    // 2. rotate: rotate the number of degrees in req
+    __rotate();
+    res.result = true;
+    ROS_INFO("ROS service to rotate RB1 %d degrees: FINISHED", req.degrees);
   }
 
 private:
-  // NOTE: Private functions in snake_case.
-  void get_odom() {
-    // TODO: It's not void
+  // NOTE: Private functions in __snake_case.
+  void __get_odom() {
+    try {
+      __tf_stamp =
+          __tf_buf.lookupTransform('odom', 'base_footprint', ros::Time(0));
+    } catch (tf2::TransformException &ex) {
+      ROS_WARN("%s", ex.what());
+      ros::Duration(1.0).sleep();
+      continue;
+    }
   }
 
-  void rotate(int32 degrees) {
+  void __rotate(int32 degrees) {
     // TODO
+    // 1. get yaw from transform rotation quaternion
+    // 2. convert parameter to radians
+    float32 rad = __deg2rad(degrees);
+    // 3. rotate to angular_tolerance (in radians)
   }
 
-  float deg_to_rad(float deg) { return deg * __PI / 180.0; }
+  float32 __deg2rad(int32 deg) { return (float32) deg * __PI / 180.0; }
 };
 
 int main(int argc, char **argv) {
