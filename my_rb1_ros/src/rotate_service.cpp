@@ -81,9 +81,9 @@ private:
   void __rotate(int32 degrees) {
     // TODO
     // 1. get yaw from transform rotation quaternion
-    // 2. convert parameter to radians
+    // 2. convert degrees parameter to radians
     float32 rad = __deg2rad(degrees);
-    // 3. rotate to angular_tolerance (in radians)
+    // 3. perform rotation to within angular_tolerance (in radians)
   }
 
   float32 __deg2rad(int32 deg) { return (float32) deg * __PI / 180.0; }
