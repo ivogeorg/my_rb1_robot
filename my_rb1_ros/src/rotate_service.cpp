@@ -50,24 +50,13 @@ private:
 
 public:
   RB1RotateService()
-      : __rate{10.0},
-        __rot_svc{__nh.advertiseService(
-            "/rotate_robot", &RB1RotateService::serviceCallback, this)},
+      : __nh{}, __rate{10.0}, __rot_svc{__nh.advertiseService(
+                                  "/rotate_robot",
+                                  &RB1RotateService::serviceCallback, this)},
         __vel_pub{__nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1)},
-        __tf_buf{},
-        __tf_listen(__tf_buf), __angular_tolerance{__deg2rad(2)} {
+        __tf_buf{}, __tf_listen(__tf_buf), __angular_tolerance{__deg2rad(2)} {
     ROS_INFO("Service /rotate_robot: READY");
   }
-//   RB1RotateService() : __rate(10.0) {
-//     __rot_svc = __nh.advertiseService(
-//             "/rotate_robot", &RB1RotateService::serviceCallback, this);
-//     __vel_pub = __nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
-//     __tf_buf();
-//     __tf_listen(__tf_buf);
-//     __angular_tolerance = __deg2rad(2);
-
-//     ROS_INFO("Service /rotate_robot: READY");
-//   }
 
   ~RB1RotateService() {}
 

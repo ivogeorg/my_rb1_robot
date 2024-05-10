@@ -103,3 +103,29 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
    1. After launch, `/robot_state_publisher` publishes `/tf` and `/tf_static`, both of type `tf2_msgs/TFMessage`.
    2. After launch, `/gazebo` publishes `/tf` and `/odom`, the latter of type `nav_msgs/Odometry`.
 
+6. The service works but there are the following warnings all the time:
+   ```
+   Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame right_wheel at time 606.152000 according to authority unknown_publisher
+         at line 278 in /tmp/binarydeb/ros-noetic-tf2-0.7.5/src/buffer_core.cpp
+   ```
+   There seems to be an ongoing discussion about this issue:
+   1. Accepted answer [here](https://answers.ros.org/question/377796/tf_repeated_data-ignoring-data-with-redundant-timestamp-for-frame-link_left_wheel-at-time-618268000-according-to-authority-unknown_publisher/).
+   2. [This](https://github.com/ros/geometry2/issues/414) issue in `ros/geometry2`.
+   3. [This](https://github.com/ros/geometry2/issues/467) issue in `ros/geometry2`.
+   4. [This](https://github.com/ros/geometry2/pull/475) pull request in `ros/geometry2`.
+
+7. The syntax for the initialization of the class members in the constructor init lists is shown in the following:
+   1. The [constructor](https://en.cppreference.com/w/cpp/language/constructor) article in the C++ reference. See the last example on the page.
+   2. This tf2 [tutorial](https://wiki.ros.org/tf2/Tutorials/Using%20stamped%20datatypes%20with%20tf2::MessageFilter).
+
+8. After the source file compiled there were linker messages about undeclared `tf2` entitites. Adding the missing package dependencies, as follows, fixed the issue:
+   ```
+   find_package(catkin REQUIRED COMPONENTS
+     roscpp
+     tf2_ros
+     tf
+     tf2
+     message_generation
+   )
+   ```
+   Interestingly, no dependencies were added to `package.xml`. _Should they?_
