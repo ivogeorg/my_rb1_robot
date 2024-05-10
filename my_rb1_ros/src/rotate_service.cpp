@@ -5,7 +5,7 @@
 #include "tf2_ros/buffer.h"
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
-#include <nav_msgs/Odometry.h> // May be unnecessary!
+// #include <nav_msgs/Odometry.h> // May be unnecessary!
 #include <ros/ros.h>
 #include <tf2_ros/transform_listener.h>
 
@@ -40,6 +40,7 @@ private:
 
   // Other
   float32 __angular_tolerance;
+  float32 __yaw_rad;
 
 public:
   RB1RotateService()
@@ -58,7 +59,7 @@ public:
   bool serviceCallback(my_rb1_ros::Rotate::Request &req,
                        my_rb1_ros::Rotate::Response &res) {
     // 1. get_odom: get tf from /odom to base_footprint
-    __get_odom();
+    __get_yaw_rad();
     // 2. rotate: rotate the number of degrees in req
     __rotate();
     res.result = true;
@@ -67,7 +68,7 @@ public:
 
 private:
   // NOTE: Private functions in __snake_case.
-  void __get_odom() {
+  void __get_yaw_rad() {
     try {
       __tf_stamp =
           __tf_buf.lookupTransform('odom', 'base_footprint', ros::Time(0));
@@ -76,17 +77,19 @@ private:
       ros::Duration(1.0).sleep();
       continue;
     }
+
+    // TODO: set __yaw_rad
   }
 
   void __rotate(int32 degrees) {
     // TODO
-    // 1. get yaw from transform rotation quaternion
+    // 1. use __yaw_rad as a starting angle (around self frame)
     // 2. convert degrees parameter to radians
     float32 rad = __deg2rad(degrees);
     // 3. perform rotation to within angular_tolerance (in radians)
   }
 
-  float32 __deg2rad(int32 deg) { return (float32) deg * __PI / 180.0; }
+  float32 __deg2rad(int32 deg) { return (float32)deg * __PI / 180.0; }
 };
 
 int main(int argc, char **argv) {
