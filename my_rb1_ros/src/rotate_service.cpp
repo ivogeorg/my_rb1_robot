@@ -1,13 +1,21 @@
+// TODO
+// THIS INCLUDE SECTION IS A F**ING MESS
+// No idea if the right thing is getting
+// included or not.
+
 #include "my_rb1_ros/Rotate.h"
+#include <ros/ros.h>
 #include "ros/duration.h"
 #include "ros/subscriber.h"
+#include <tf/tf.h>
+#include "tf/LinearMath/Quaternion.h"
+#include "tf/LinearMath/Scalar.h"
+#include <tf/LinearMath/Matrix3x3.h>
 #include "tf2/exceptions.h"
 #include "tf2_ros/buffer.h"
+#include <tf2_ros/transform_listener.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
-// #include <nav_msgs/Odometry.h> // May be unnecessary!
-#include <ros/ros.h>
-#include <tf2_ros/transform_listener.h>
 
 #define __PI 3.14159265359
 
@@ -24,12 +32,6 @@ private:
   // ROS Publishers
   ros::Publisher __vel_pub;
 
-  // ROS Subscribers
-  // NOTE: Not necessary to subscribe to /odom.
-  //       tf2_ros::Buffer::lookupTransform() returns
-  //       tf b/n the /odom and base_footprint frames.
-  //   ros::Subscriber __odom_sub;
-
   // ROS Messages
   geometry_msgs::Twist __vel_msg;
   geometry_msgs::TransformStamped __tf_stamp;
@@ -39,8 +41,8 @@ private:
   tf2_ros::TransformListener __tf_listen;
 
   // Other
-  float32 __angular_tolerance;
-  float32 __yaw_rad;
+  double __angular_tolerance;
+  double __yaw_rad;
 
 public:
   RB1RotateService()
@@ -61,9 +63,10 @@ public:
     // 1. get_odom: get tf from /odom to base_footprint
     __get_yaw_rad();
     // 2. rotate: rotate the number of degrees in req
-    __rotate();
+    __rotate(req.degrees);
     res.result = true;
     ROS_INFO("ROS service to rotate RB1 %d degrees: FINISHED", req.degrees);
+    return true;
   }
 
 private:
@@ -71,25 +74,40 @@ private:
   void __get_yaw_rad() {
     try {
       __tf_stamp =
-          __tf_buf.lookupTransform('odom', 'base_footprint', ros::Time(0));
+          __tf_buf.lookupTransform("odom", "base_footprint", ros::Time(0));
     } catch (tf2::TransformException &ex) {
       ROS_WARN("%s", ex.what());
       ros::Duration(1.0).sleep();
-      continue;
     }
-
-    // TODO: set __yaw_rad
+    tf::Quaternion q(
+        __tf_stamp.transform.rotation.x,
+        __tf_stamp.transform.rotation.y,
+        __tf_stamp.transform.rotation.z,
+        __tf_stamp.transform.rotation.w
+        );
+    tf::Matrix3x3 m3x3(q);
+    double roll, pitch, yaw;
+    m3x3.getRPY(roll, pitch, yaw);
+    __yaw_rad = yaw;
   }
 
-  void __rotate(int32 degrees) {
+  void __rotate(int degrees) {
+    double rad = __deg2rad(degrees);
+
+
     // TODO
-    // 1. use __yaw_rad as a starting angle (around self frame)
-    // 2. convert degrees parameter to radians
-    float32 rad = __deg2rad(degrees);
-    // 3. perform rotation to within angular_tolerance (in radians)
   }
 
-  float32 __deg2rad(int32 deg) { return (float32)deg * __PI / 180.0; }
+  double __deg2rad(int deg) { return (float)deg * __PI / 180.0; }
+
+  double __norm_angle(double angle) {
+        double res = angle;
+        while (res > __PI)
+            res -= 2.0 * __PI;
+        while (res < -__PI)
+            res += 2.0 * __PI;
+        return res;
+  }
 };
 
 int main(int argc, char **argv) {
