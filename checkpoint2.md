@@ -4,6 +4,29 @@
 
 Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in place a specified number of degrees clockwise or counteclockwise. The robot is rotated by publishing to the `/cmd_vel` topic. The service is called with a custom message, containing an integer request variable `degrees` and a boolean response variable `result`. The service is implemented in a package `my_rb1_ros`.
 
+#### Submission notes
+
+_Notes of interest to the reviewer!_
+
+`cd ~/catkin_ws/src/my_rb1_robot`
+`git clone https://github.com/ivogeorg/my_rb1_robot.git` (unnecessary if already working in my workspace)
+`git checkout checkpoint2`
+`roslaunch my_rb1_gazebo my_rb1_robot_warehouse.launch`
+`roslaunch my_rb1_ros rotate_service.launch`
+`rosservice call /rotate_robot "degrees: -90"`
+
+1. The branch `checkpoint2` has not been merged.
+2. The `#include` section of the source file [`src/rotate_service.cpp`](src/rotate_service_cpp) is messy. No attempt at minimality has been made.
+3. When the service is launched, the service works per the requirements, but `TF_REPEATED_DATA` warnings are issued at a high rate. Removing them seems to require a more in-depth knowledge of the `tf` infrastructure than I posses right now.
+4. The following constants have been `#define`d, for pi, the angular velocity of the robot, and the ROS rate (in Hz):
+   ```c++
+   #define __PI 3.14159265359
+   #define __VELOCITY 0.25
+   #define __RATE 10.0
+   ```
+5. The significant delay of this assignment was mainly due to spending a lot of time trying to wrap my head around the complexities and ambiguities of `tf`. The design is overly complex and the documentation is quite lacking. The relationship of `tf` and `tf2` is poorly described ("`tf2` is a _second generation_ implementation of `tf`" is just not enough). A much deeper dive would be necessary at some point.
+6. I could not get the rotation to display along with the frame. The only way I could think of displaying the frame was to select the robot in translation mode. But then the visual seems to be frozen to the programmatic rotation and the service hangs. The moment I switch back to the selector mode, the robot shows in the end state of the rotation.
+
 #### Implementation notes
 
 1. The node:

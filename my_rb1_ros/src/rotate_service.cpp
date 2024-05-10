@@ -1,10 +1,3 @@
-// TODO
-// THIS INCLUDE SECTION IS A F**ING MESS
-// No idea if the right thing is getting
-// included or not.
-// Should ROS and TF be included as "" or
-// as <>
-
 #include "my_rb1_ros/Rotate.h"
 #include <cmath>
 #include <geometry_msgs/TransformStamped.h>
@@ -22,6 +15,7 @@
 
 #define __PI 3.14159265359
 #define __VELOCITY 0.25
+#define __RATE 10.0
 
 class RB1RotateService {
 private:
@@ -50,9 +44,9 @@ private:
 
 public:
   RB1RotateService()
-      : __nh{}, __rate{10.0}, __rot_svc{__nh.advertiseService(
-                                  "/rotate_robot",
-                                  &RB1RotateService::serviceCallback, this)},
+      : __nh{}, __rate{__RATE}, __rot_svc{__nh.advertiseService(
+                                    "/rotate_robot",
+                                    &RB1RotateService::serviceCallback, this)},
         __vel_pub{__nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1)},
         __tf_buf{}, __tf_listen(__tf_buf), __angular_tolerance{__deg2rad(2)} {
     ROS_INFO("Service /rotate_robot: READY");
@@ -60,16 +54,15 @@ public:
 
   ~RB1RotateService() {}
 
-  // NOTE: Public functions in camel_case.
-
+  // NOTE: Public functions in camelCase.
   bool serviceCallback(my_rb1_ros::Rotate::Request &req,
                        my_rb1_ros::Rotate::Response &res) {
-    // 1. get_odom: get tf from /odom to base_footprint
     __get_yaw_rad();
-    // 2. rotate: rotate the number of degrees in req
     __rotate(req.degrees);
     res.result = true;
+
     ROS_INFO("ROS service to rotate RB1 %d degrees: FINISHED", req.degrees);
+
     return true;
   }
 
@@ -81,7 +74,6 @@ private:
           __tf_buf.lookupTransform("odom", "base_footprint", ros::Time(0));
     } catch (tf2::TransformException &ex) {
       ROS_WARN("%s", ex.what());
-      ros::Duration(1.0).sleep();
     }
     tf::Quaternion q(
         __tf_stamp.transform.rotation.x, __tf_stamp.transform.rotation.y,
@@ -93,8 +85,6 @@ private:
   }
 
   void __rotate(int degrees) {
-    double rad = __deg2rad(degrees);
-
     if (degrees > 0)
       __vel_msg.angular.z = __VELOCITY;
     else
