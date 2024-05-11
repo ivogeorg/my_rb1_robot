@@ -27,6 +27,20 @@ _Notes of interest to the reviewer!_
 5. The significant delay of this assignment was mainly due to spending a lot of time trying to wrap my head around the complexities and ambiguities of `tf`. The design is overly complex and the documentation is quite lacking. The relationship of `tf` and `tf2` is poorly described ("`tf2` is a _second generation_ implementation of `tf`" is just not enough). A much deeper dive would be necessary at some point.
 6. I could not get the rotation to display along with the frame. The only way I could think of displaying the frame was to select the robot in translation mode. But then the visual seems to be frozen to the programmatic rotation and the service hangs. The moment I switch back to the selector mode, the robot shows in the end state of the rotation.
 
+#### TODO: Items/features to modify and/or fix for re-evaluation
+
+1. Instead of `TransformListener` use the `/odom` topic directly to rotate the robot. This will also remove the warning spam.
+2. Faster rotation (3 sec for 90 degrees, 6 sec for 180, 12 sec for 360).
+3. `result` variable of custom message has to be `string`.
+4. Status messages like `/rotate_robot service: success/failed: +/- xx degrees`:
+   1. `ROS_INFO("/rotate_robot service: Called: +/- %d degrees", req.degrees).
+   2. `ROS_INFO("/rotate_robot service: Working...").
+   3. `ROS_INFO("/rotate_robot service: Success: +/- %d degrees", degrees_after) + `res.result`.
+   4. `ROS_INFO("/rotate_robot service: Failed: +/- %d degrees", req.degrees) + `res.result`.
+
+
+
+
 #### Implementation notes
 
 1. The node:
