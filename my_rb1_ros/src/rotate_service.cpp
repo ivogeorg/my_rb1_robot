@@ -12,10 +12,10 @@
 #include <string>
 #include <tf/tf.h>
 
-#define __PI 3.14159265359
+#define __PI 3.14159265358979323846
 #define __VELOCITY 0.5
 #define __RATE 10.0
-#define __ANGULAR_TOLERANCE_DEG 1
+#define __ANGULAR_TOLERANCE_DEG 1.5
 
 class RB1RotateService {
 private:
@@ -58,42 +58,31 @@ public:
   // NOTE: Public functions in camelCase.
   bool serviceCallback(my_rb1_ros::Rotate::Request &req,
                        my_rb1_ros::Rotate::Response &res) {
-    double yaw_start = __yaw_rad;
     ROS_INFO("/rotate_robot service: CALLED");
-    ROS_INFO("          Current yaw: %f degrees", __rad2deg(yaw_start));
     ROS_INFO("   Requested rotation: %d degrees", req.degrees);
-    ROS_INFO("    Angular tolerance: %d degrees", __ANGULAR_TOLERANCE_DEG);
+    ROS_INFO("    Angular tolerance: %.2f degrees", __ANGULAR_TOLERANCE_DEG);
 
     double req_rot = __deg2rad(req.degrees);
 
     double sec_start = ros::Time::now().toSec();
     __rotate(req.degrees);
     double sec_stop = ros::Time::now().toSec();
-    ROS_INFO("/rotate_robot service: rotation performed in %f seconds", sec_stop - sec_start);
 
-    double yaw_result = __yaw_rad;
-    ROS_INFO("            Final yaw: %f degrees", __rad2deg(yaw_result));
-
-    // Normalize requested degrees to handle angles above pi
-    if (abs(yaw_result - yaw_start - __norm_angle(req_rot)) <
-        __angular_tolerance) {
+    if (abs(__actual_rotation - req_rot) < __angular_tolerance) {
       res.result = "/rotate_robot service: SUCCESS (actual rotation " +
-                   std::to_string(__rad2deg(__actual_rotation)) +
-                   " degrees)";
+                   std::to_string(__rad2deg(__actual_rotation)) + " degrees)";
       ROS_INFO("/rotate_robot service: SUCCESS");
     } else {
       res.result = "/rotate_robot service: FAILED (actual rotation " +
-                   std::to_string(__rad2deg(__actual_rotation)) +
-                   " degrees)";
+                   std::to_string(__rad2deg(__actual_rotation)) + " degrees)";
       ROS_INFO("/rotate_robot service: FAILED");
     }
-    ROS_INFO("          Current yaw: %f degrees", __rad2deg(yaw_result));
-    ROS_INFO("   Requested rotation: %d degrees", req.degrees);
-    // Reports actual rotation, excluding multiples of 360
-    ROS_INFO("      Actual rotation: %f degrees",
-             __rad2deg(yaw_result - yaw_start));
+    ROS_INFO("/rotate_robot service: performed in %.2f seconds",
+             sec_stop - sec_start);
+    ROS_INFO("      Actual rotation: %f degrees", __rad2deg(__actual_rotation));
 
     ROS_INFO("/rotate_robot service: FINISHED");
+    ROS_INFO(" ");
 
     return true;
   }
@@ -150,7 +139,8 @@ private:
     __actual_rotation = turn_angle;
   }
 
-  double __deg2rad(int deg) { return (float)deg * __PI / 180.0; }
+  double __deg2rad(int deg) { return (double)deg * __PI / 180.0; }
+  double __deg2rad(double deg) { return deg * __PI / 180.0; }
   double __rad2deg(double rad) { return rad * 180 / __PI; }
 
   double __norm_angle(double angle) {

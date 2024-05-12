@@ -1,5 +1,7 @@
 <launch>
-    <node 
+   <env name="ROSCONSOLE_CONFIG_FILE"
+       value="$(find my_rb1_ros)/config/ros_console.config"/>
+   <node 
         pkg="my_rb1_ros"
         type="rotate_service"
         name="rotate_service_node"
