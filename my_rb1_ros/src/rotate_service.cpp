@@ -104,6 +104,9 @@ private:
     double turn_angle = 0;
     double goal_angle = __deg2rad(degrees);
 
+    // Necessary code duplication to avoid inaccuracy
+    // depending on the direction of rotation.
+    // Notice the condition in the while loops.
     if (goal_angle > 0) {
       while (ros::ok() &&
              (abs(turn_angle + __angular_tolerance) < abs(goal_angle))) {
@@ -156,6 +159,15 @@ private:
 int main(int argc, char **argv) {
   ros::init(argc, argv, "rotate_service_node");
 
+  // spinner has to be initilized BEFORE
+  // the registration of the callbacks,
+  // which happens in the constructor of
+  // the RB1RotateService class, and
+  // started after that. This allows the
+  // service and topic callbacks to
+  // interleave, providing fresh updates
+  // of the robots yaw to the rotation
+  // code.
   ros::AsyncSpinner spinner(2);
 
   RB1RotateService robotRotateService;

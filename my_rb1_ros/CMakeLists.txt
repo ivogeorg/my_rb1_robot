@@ -9,9 +9,7 @@ project(my_rb1_ros)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  tf2_ros
   tf
-  tf2
   message_generation
 )
 
