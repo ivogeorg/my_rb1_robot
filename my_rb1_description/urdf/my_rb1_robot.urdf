@@ -26,7 +26,7 @@
         <material>Gazebo/Black</material>
     </gazebo>
     <gazebo reference="front_laser">
-        <material>Gazebo/Black</material>
+        <material>Gazebo/White</material>
     </gazebo>
     <gazebo reference="front_caster">
         <material>Gazebo/Green</material>

@@ -1,7 +1,11 @@
 #include "my_rb1_ros/Rotate.h"
+#include "ros/init.h"
+#include "ros/spinner.h"
+#include "tf/transform_datatypes.h"
 #include <cmath>
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
+#include <ros/callback_queue.h>
 #include <ros/duration.h>
 #include <ros/ros.h>
 #include <ros/subscriber.h>
@@ -41,7 +45,8 @@ public:
                                     "/rotate_robot",
                                     &RB1RotateService::serviceCallback, this)},
         __vel_pub{__nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1)},
-        __odom_sub{__nh.subscribe("odom", 1, &RB1RotateService::odometryCallback, this)},
+        __odom_sub{__nh.subscribe("odom", 1,
+                                  &RB1RotateService::odometryCallback, this)},
         __angular_tolerance{__deg2rad(__ANGULAR_TOLERANCE_DEG)} {
     ROS_INFO("/rotate_robot service: READY");
   }
@@ -53,7 +58,8 @@ public:
                        my_rb1_ros::Rotate::Response &res) {
     double yaw_start = __yaw_rad;
     ROS_INFO("/rotate_robot service: CALLED");
-    ROS_INFO("              Current yaw: %d degrees", (int) __rad2deg(yaw_start));
+    ROS_INFO("              Current yaw: %d degrees",
+             (int)__rad2deg(yaw_start));
     ROS_INFO("       Requested rotation: %d degrees", req.degrees);
     ROS_INFO("        Angular tolerance: %d degrees", __ANGULAR_TOLERANCE_DEG);
 
@@ -63,15 +69,16 @@ public:
 
     // TODO: report actual degrees turned
     if (abs(yaw_start + yaw_result) < __angular_tolerance) {
-        res.result = "/rotate_robot service: SUCCESS"; // TODO
-        ROS_INFO("/rotate_robot service: SUCCESS");
+      res.result = "/rotate_robot service: SUCCESS"; // TODO
+      ROS_INFO("/rotate_robot service: SUCCESS");
     } else {
-        res.result = "/rotate_robot service: FAILED";  // TODO
-        ROS_INFO("/rotate_robot service: FAILED");
+      res.result = "/rotate_robot service: FAILED"; // TODO
+      ROS_INFO("/rotate_robot service: FAILED");
     }
-    ROS_INFO("              Current yaw: %d degrees", (int) __rad2deg(yaw_start));
+    ROS_INFO("              Current yaw: %d degrees",
+             (int)__rad2deg(yaw_start));
     ROS_INFO("       Requested rotation: %d degrees", req.degrees);
-    ROS_INFO("        Actual rotatedion: %d degrees", req.degrees);  // TODO
+    ROS_INFO("        Actual rotatedion: %d degrees", req.degrees); // TODO
 
     ROS_INFO("/rotate_robot: FINISHED");
 
@@ -79,13 +86,13 @@ public:
   }
 
   void odometryCallback(const nav_msgs::OdometryConstPtr &odom) {
-    ROS_INFO("RB1 yaw updated by /odom: %f", odom->twist.twist.angular.z);
-    __yaw_rad = odom->twist.twist.angular.z;
+    __yaw_rad = tf::getYaw(odom->pose.pose.orientation);
   }
 
 private:
   // NOTE: Private functions in __snake_case.
   void __rotate(int degrees) {
+    ROS_INFO("/rotate_robot: Working...");
     if (degrees > 0)
       __vel_msg.angular.z = __VELOCITY;
     else
@@ -99,13 +106,13 @@ private:
            (abs(turn_angle + __angular_tolerance) < abs(goal_angle))) {
       // Turn robot
       __vel_pub.publish(__vel_msg);
-      ROS_INFO("/rotate_robot: Working...");
       __rate.sleep();
 
-      double delta_angle = __norm_angle(__yaw_rad - last_angle);
+      double temp_yaw = __yaw_rad; // updated
+      double delta_angle = __norm_angle(temp_yaw - last_angle);
 
       turn_angle += delta_angle;
-      last_angle = __yaw_rad;
+      last_angle = temp_yaw;
     }
 
     // Stop robot
@@ -129,9 +136,13 @@ private:
 int main(int argc, char **argv) {
   ros::init(argc, argv, "rotate_service_node");
 
+  ros::AsyncSpinner spinner(2);
+
   RB1RotateService robotRotateService;
 
-  ros::spin();
+  spinner.start();
+
+  ros::waitForShutdown();
 
   return 0;
 }

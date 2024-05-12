@@ -29,15 +29,14 @@ _Notes of interest to the reviewer!_
 
 #### TODO: Items/features to modify and/or fix for re-evaluation
 
-1. Instead of `TransformListener` use the `/odom` topic directly to rotate the robot. This will also remove the warning spam.
+1. ~Instead of `TransformListener` use the `/odom` topic directly to rotate the robot. This will also remove the warning spam.~
 2. Faster rotation (3 sec for 90 degrees, 6 sec for 180, 12 sec for 360).
-3. `result` variable of custom message has to be `string`.
+3. ~`result` variable of custom message has to be `string`.~
 4. Status messages like `/rotate_robot service: success/failed: +/- xx degrees`:
    1. `ROS_INFO("/rotate_robot service: Called: +/- %d degrees", req.degrees).
    2. `ROS_INFO("/rotate_robot service: Working...").
    3. `ROS_INFO("/rotate_robot service: Success: +/- %d degrees", degrees_after) + `res.result`.
    4. `ROS_INFO("/rotate_robot service: Failed: +/- %d degrees", req.degrees) + `res.result`.
-
 
 
 
@@ -166,3 +165,7 @@ _Notes of interest to the reviewer!_
    )
    ```
    Interestingly, no dependencies were added to `package.xml`. _Should they?_
+
+9. If a service server node depends on the timely update of a topic it subscribes to, what are the options to get the timely update?
+   1. Multithreaded node.
+   2. Can the node request an update while performing the service?
