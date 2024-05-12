@@ -9,12 +9,13 @@
 #include <ros/duration.h>
 #include <ros/ros.h>
 #include <ros/subscriber.h>
+#include <string>
 #include <tf/tf.h>
 
 #define __PI 3.14159265359
-#define __VELOCITY 0.25
+#define __VELOCITY 0.5
 #define __RATE 10.0
-#define __ANGULAR_TOLERANCE_DEG 2
+#define __ANGULAR_TOLERANCE_DEG 1
 
 class RB1RotateService {
 private:
@@ -38,6 +39,7 @@ private:
   // Other
   double __angular_tolerance;
   double __yaw_rad;
+  double __actual_rotation;
 
 public:
   RB1RotateService()
@@ -58,29 +60,40 @@ public:
                        my_rb1_ros::Rotate::Response &res) {
     double yaw_start = __yaw_rad;
     ROS_INFO("/rotate_robot service: CALLED");
-    ROS_INFO("              Current yaw: %d degrees",
-             (int)__rad2deg(yaw_start));
-    ROS_INFO("       Requested rotation: %d degrees", req.degrees);
-    ROS_INFO("        Angular tolerance: %d degrees", __ANGULAR_TOLERANCE_DEG);
+    ROS_INFO("          Current yaw: %f degrees", __rad2deg(yaw_start));
+    ROS_INFO("   Requested rotation: %d degrees", req.degrees);
+    ROS_INFO("    Angular tolerance: %d degrees", __ANGULAR_TOLERANCE_DEG);
 
+    double req_rot = __deg2rad(req.degrees);
+
+    double sec_start = ros::Time::now().toSec();
     __rotate(req.degrees);
+    double sec_stop = ros::Time::now().toSec();
+    ROS_INFO("/rotate_robot service: rotation performed in %f seconds", sec_stop - sec_start);
 
     double yaw_result = __yaw_rad;
+    ROS_INFO("            Final yaw: %f degrees", __rad2deg(yaw_result));
 
-    // TODO: report actual degrees turned
-    if (abs(yaw_start + yaw_result) < __angular_tolerance) {
-      res.result = "/rotate_robot service: SUCCESS"; // TODO
+    // Normalize requested degrees to handle angles above pi
+    if (abs(yaw_result - yaw_start - __norm_angle(req_rot)) <
+        __angular_tolerance) {
+      res.result = "/rotate_robot service: SUCCESS (actual rotation " +
+                   std::to_string(__rad2deg(__actual_rotation)) +
+                   " degrees)";
       ROS_INFO("/rotate_robot service: SUCCESS");
     } else {
-      res.result = "/rotate_robot service: FAILED"; // TODO
+      res.result = "/rotate_robot service: FAILED (actual rotation " +
+                   std::to_string(__rad2deg(__actual_rotation)) +
+                   " degrees)";
       ROS_INFO("/rotate_robot service: FAILED");
     }
-    ROS_INFO("              Current yaw: %d degrees",
-             (int)__rad2deg(yaw_start));
-    ROS_INFO("       Requested rotation: %d degrees", req.degrees);
-    ROS_INFO("        Actual rotatedion: %d degrees", req.degrees); // TODO
+    ROS_INFO("          Current yaw: %f degrees", __rad2deg(yaw_result));
+    ROS_INFO("   Requested rotation: %d degrees", req.degrees);
+    // Reports actual rotation, excluding multiples of 360
+    ROS_INFO("      Actual rotation: %f degrees",
+             __rad2deg(yaw_result - yaw_start));
 
-    ROS_INFO("/rotate_robot: FINISHED");
+    ROS_INFO("/rotate_robot service: FINISHED");
 
     return true;
   }
@@ -92,7 +105,7 @@ public:
 private:
   // NOTE: Private functions in __snake_case.
   void __rotate(int degrees) {
-    ROS_INFO("/rotate_robot: Working...");
+    ROS_INFO("/rotate_robot service: Working...");
     if (degrees > 0)
       __vel_msg.angular.z = __VELOCITY;
     else
@@ -102,22 +115,39 @@ private:
     double turn_angle = 0;
     double goal_angle = __deg2rad(degrees);
 
-    while (ros::ok() &&
-           (abs(turn_angle + __angular_tolerance) < abs(goal_angle))) {
-      // Turn robot
-      __vel_pub.publish(__vel_msg);
-      __rate.sleep();
+    if (goal_angle > 0) {
+      while (ros::ok() &&
+             (abs(turn_angle + __angular_tolerance) < abs(goal_angle))) {
+        // Turn robot
+        __vel_pub.publish(__vel_msg);
+        __rate.sleep();
 
-      double temp_yaw = __yaw_rad; // updated
-      double delta_angle = __norm_angle(temp_yaw - last_angle);
+        double temp_yaw = __yaw_rad; // __yaw_rad may change!
+        double delta_angle = __norm_angle(temp_yaw - last_angle);
 
-      turn_angle += delta_angle;
-      last_angle = temp_yaw;
+        turn_angle += delta_angle;
+        last_angle = temp_yaw;
+      }
+    } else {
+      while (ros::ok() &&
+             (abs(turn_angle - __angular_tolerance) < abs(goal_angle))) {
+        // Turn robot
+        __vel_pub.publish(__vel_msg);
+        __rate.sleep();
+
+        double temp_yaw = __yaw_rad; // __yaw_rad may change!
+        double delta_angle = __norm_angle(temp_yaw - last_angle);
+
+        turn_angle += delta_angle;
+        last_angle = temp_yaw;
+      }
     }
 
     // Stop robot
     __vel_msg.angular.z = 0.0;
     __vel_pub.publish(__vel_msg);
+
+    __actual_rotation = turn_angle;
   }
 
   double __deg2rad(int deg) { return (float)deg * __PI / 180.0; }

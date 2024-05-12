@@ -170,3 +170,5 @@ _Notes of interest to the reviewer!_
    1. [`ros::AsyncSpinner`](https://docs.ros.org/en/noetic/api/roscpp/html/classros_1_1AsyncSpinner.html), in our case with 2 threads.
    2. Multithreaded node with a `std::mutex` on the shared variable.
    3. Timer-based update, based on [`ros::Timer`](https://docs.ros.org/en/indigo/api/roscpp/html/classros_1_1Timer.html).
+
+10. The robot continues to rotate after the `__rotate` function has exited, to an angle proportional to the angular velocity of the rotation. This extra angle has not been accounted for but the last commit before the tag `odom-topic` reports the current yaw at the beginning and end of each service call. The current difference is about 3 degrees in the direction of rotation.
