@@ -167,5 +167,6 @@ _Notes of interest to the reviewer!_
    Interestingly, no dependencies were added to `package.xml`. _Should they?_
 
 9. If a service server node depends on the timely update of a topic it subscribes to, what are the options to get the timely update?
-   1. Multithreaded node.
-   2. Can the node request an update while performing the service?
+   1. [`ros::AsyncSpinner`](https://docs.ros.org/en/noetic/api/roscpp/html/classros_1_1AsyncSpinner.html), in our case with 2 threads.
+   2. Multithreaded node with a `std::mutex` on the shared variable.
+   3. Timer-based update, based on [`ros::Timer`](https://docs.ros.org/en/indigo/api/roscpp/html/classros_1_1Timer.html).
