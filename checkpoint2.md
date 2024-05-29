@@ -8,12 +8,12 @@ Creates a node providing a service `/rotate_robot` to rotate the RB1 robot in pl
 
 _Notes of interest to the reviewer!_
 
-`cd ~/catkin_ws/src/my_rb1_robot`
-`git clone https://github.com/ivogeorg/my_rb1_robot.git` (unnecessary if already working in my workspace)
-`git checkout checkpoint2`
-`roslaunch my_rb1_gazebo my_rb1_robot_warehouse.launch`
-`roslaunch my_rb1_ros rotate_service.launch`
-`rosservice call /rotate_robot "degrees: -90"`
+`cd ~/catkin_ws/src/my_rb1_robot`  
+`git clone https://github.com/ivogeorg/my_rb1_robot.git` (unnecessary if already working in my workspace)  
+`git checkout checkpoint2`  
+`roslaunch my_rb1_gazebo my_rb1_robot_warehouse.launch`  
+`roslaunch my_rb1_ros rotate_service.launch`  
+`rosservice call /rotate_robot "degrees: -90"`  
 
 1. The branch `checkpoint2` has not been merged.
 2. The `#include` section of the source file [`src/rotate_service.cpp`](src/rotate_service_cpp) is messy. No attempt at minimality has been made.
